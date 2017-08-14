@@ -38,6 +38,27 @@ class LoginViewController: UIViewController {
             showAlertView(message: loginErrors.emptyPassword)
             return
         }
+        UdacityClient.sharedInstance().postNewSession(username: textFieldEmail.text!, password: textFieldPassword.text!) { (success, error) in
+            performUIUpdatesOnMain {
+                if let error = error {
+                    print(error)
+                }
+                if !success! {
+                    print("error: \(String(describing: error?.code)) \(String(describing: error?.description)))")
+                    let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription)))"
+                    self.displayError(messageError)
+                    
+                } else {
+                    if error == nil {
+                        print("success! \(String(describing: success))")
+                    } else {
+                        let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
+                        self.displayError(messageError)
+                    }
+                }
+                
+            }
+        }
     }
     
     // Open safari in app for sign up
@@ -45,7 +66,17 @@ class LoginViewController: UIViewController {
         UIApplication.shared.open(URL(string: "https://www.udacity.com/account/auth#!/signup")!)
         
     }
+    }
+
+// MARK: - LoginViewController (Configure UI)
+
+private extension LoginViewController {
     
+    func displayError(_ errorString: String?) {
+        if let errorString = errorString {
+            showAlertView(message: errorString)
+        }
+    }
     // MARK: Alert
     func showAlertView(message: String) {
         
@@ -62,5 +93,5 @@ class LoginViewController: UIViewController {
         present(failLoginAlertView!, animated: true, completion: nil)
     }
 
-}
 
+}
