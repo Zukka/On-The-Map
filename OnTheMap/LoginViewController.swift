@@ -65,7 +65,7 @@ class LoginViewController: UIViewController {
 
 }
 
-// MARK: - LoginViewController (Configure UI)
+// MARK: - LoginViewController Alerts
 
 private extension LoginViewController {
     
@@ -74,6 +74,7 @@ private extension LoginViewController {
             showAlertView(message: errorString)
         }
     }
+    
     // MARK: Alert
     func showAlertView(message: String) {
         
@@ -89,6 +90,4 @@ private extension LoginViewController {
         
         present(failLoginAlertView!, animated: true, completion: nil)
     }
-
-
 }

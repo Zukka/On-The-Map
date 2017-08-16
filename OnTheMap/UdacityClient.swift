@@ -23,96 +23,87 @@ class UdacityClient: NSObject {
         super.init()
     }
     
-    
-    
-    
     // MARK: POST Methods
-    
-    func taskForPOSTMethod(_ method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
-        
-        /* 1. Set the parameters */
-        var parametersWithApiKey = parameters
-        
-        /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method))
+ 
+    func postNewSession( username: String,  password: String, completionHandlerForNewSession: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
+        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Session)")!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonBody.data(using: String.Encoding.utf8)
-        
-        /* 4. Make the request */
-        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+        request.httpBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".data(using: String.Encoding.utf8)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
             
-            func sendError(_ error: String) {
-                print(error)
-                let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForPOST(nil, NSError(domain: "taskForPOSTMethod", code: 1, userInfo: userInfo))
+            if error != nil {
+                completionHandlerForNewSession(false, error as NSError?)
+                return
             }
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                sendError("There was an error with your request: \(error!)")
+            let range = Range(5..<data!.count)
+            let newData = data?.subdata(in: range) /* subset response data! */
+            // parse the data
+            let parsedResult: [String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: newData!, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
+                completionHandlerForNewSession(true, NSError(domain: "postNewSession", code: 99, userInfo: parsedError))
                 return
             }
             
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
-                return
+            if let statusErrorCode = parsedResult[UdacityClient.JSONResponseKeys.StatusErrorCode] as? Int {
+                let statusErrorDescription = parsedResult[UdacityClient.JSONResponseKeys.StatusErrorMessage] as? String
+                let errorDescription = [NSLocalizedDescriptionKey : "\(String(describing: statusErrorDescription!))"]
+                completionHandlerForNewSession(true, NSError(domain: "postNewSession", code: statusErrorCode, userInfo: errorDescription))
+            } else {
+                completionHandlerForNewSession(true, nil)
             }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                sendError("No data was returned by the request!")
-                return
-            }
-            
-            /* 5/6. Parse the data and use the data (happens in completion handler) */
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
         }
-        
-        /* 7. Start the request */
         task.resume()
         
-        return task
     }
-
     
+    // MARK: DELETE Methods
     
-    
-    
-    
-        
-    // given raw JSON, return a usable Foundation object
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
-       
-        var parsedResult: AnyObject! = nil
-        do {
-            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
-            print(parsedResult)
-        } catch {
-            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+    func deleteSession(completionHandlerForDELETE: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
+        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Session)")!)
+        request.httpMethod = "DELETE"
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
         }
-        
-        completionHandlerForConvertData(parsedResult, nil)
-    }
-
-    // create a URL from parameters
-    private func udacityURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
-        
-        var components = URLComponents()
-        components.scheme = UdacityClient.Constants.ApiScheme
-        components.host = UdacityClient.Constants.ApiHost
-        components.path = ""
-        components.queryItems = [URLQueryItem]()
-        
-        for (key, value) in parameters {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
-            components.queryItems!.append(queryItem)
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
-        
-        return components.url!
+        let session = URLSession.shared
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            if error != nil {
+                completionHandlerForDELETE(false, error as NSError?)
+                return
+            }
+            let range = Range(5..<data!.count)
+            let newData = data?.subdata(in: range) /* subset response data! */
+            print(NSString(data: newData!, encoding: String.Encoding.utf8.rawValue)!)
+            // parse the data
+            let parsedResult: [String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: newData!, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
+                completionHandlerForDELETE(true, NSError(domain: "deleteSession", code: 99, userInfo: parsedError))
+                return
+            }
+            
+            if let statusErrorCode = parsedResult[UdacityClient.JSONResponseKeys.StatusErrorCode] as? Int {
+                let statusErrorDescription = parsedResult[UdacityClient.JSONResponseKeys.StatusErrorMessage] as? String
+                let errorDescription = [NSLocalizedDescriptionKey : "\(String(describing: statusErrorDescription!))"]
+                completionHandlerForDELETE(true, NSError(domain: "deleteSession", code: statusErrorCode, userInfo: errorDescription))
+            } else {
+                completionHandlerForDELETE(true, nil)
+            }
+
+        }
+        task.resume()
     }
     
     // MARK: Shared Instance

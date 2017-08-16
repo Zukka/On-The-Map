@@ -167,11 +167,17 @@
             </objects>
             <point key="canvasLocation" x="367" y="-713"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--App Tab Bar View Controller-->
         <scene sceneID="xJg-7Y-oR3">
             <objects>
-                <tabBarController id="q6O-by-IwN" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="c9G-QX-Z7i"/>
+                <tabBarController id="q6O-by-IwN" customClass="AppTabBarViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="c9G-QX-Z7i">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="nzr-gq-qMs">
+                            <connections>
+                                <action selector="logoutPressed:" destination="q6O-by-IwN" id="ZpT-e4-qed"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="hK1-O4-ll8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
