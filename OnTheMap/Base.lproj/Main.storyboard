@@ -99,6 +99,9 @@
                                             <constraint firstAttribute="height" constant="66" id="PdC-MI-zpx"/>
                                         </constraints>
                                     </imageView>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Gp2-8n-WM4">
+                                        <rect key="frame" x="195" y="358" width="20" height="20"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Bob-tj-S3N" firstAttribute="top" secondItem="63H-Hw-nRp" secondAttribute="bottom" constant="18" id="3Nj-da-yDZ"/>
@@ -120,10 +123,13 @@
                             <constraint firstItem="PVp-0Y-K2z" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-15.5" id="0CN-r7-4Fw"/>
                             <constraint firstItem="PVp-0Y-K2z" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="6sC-sx-kSM"/>
                             <constraint firstItem="PVp-0Y-K2z" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bun-tY-jDH"/>
+                            <constraint firstItem="Gp2-8n-WM4" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="dOE-JO-IE5"/>
+                            <constraint firstItem="Gp2-8n-WM4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="2.6666666666666572" id="taq-aH-BkF"/>
                             <constraint firstAttribute="trailing" secondItem="PVp-0Y-K2z" secondAttribute="trailing" id="xKp-ly-J3N"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="loginActivityIndicator" destination="Gp2-8n-WM4" id="6XX-ro-TQ4"/>
                         <outlet property="textFieldEmail" destination="mmv-JP-nuD" id="fgz-He-IlI"/>
                         <outlet property="textFieldPassword" destination="had-ZF-Bke" id="6lf-yK-8NH"/>
                     </connections>

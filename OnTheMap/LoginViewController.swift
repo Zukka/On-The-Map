@@ -18,6 +18,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
+    @IBOutlet weak var loginActivityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +39,10 @@ class LoginViewController: UIViewController {
             showAlertView(message: loginErrors.emptyPassword)
             return
         }
+        startActivityIndicator()
         UdacityClient.sharedInstance().postNewSession(username: textFieldEmail.text!, password: textFieldPassword.text!) { (success, error) in
             performUIUpdatesOnMain {
+                self.stopActivityIndicator()
                 if let error = error {
                     let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
                     self.displayError(messageError)
@@ -63,6 +66,17 @@ class LoginViewController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
 
+    // MARK : Activity Indicator
+    
+    func startActivityIndicator() {
+        loginActivityIndicator.isHidden = false
+        loginActivityIndicator.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        loginActivityIndicator.isHidden = true
+        loginActivityIndicator.stopAnimating()
+    }
 }
 
 // MARK: - LoginViewController Alerts
