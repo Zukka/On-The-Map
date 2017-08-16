@@ -27,7 +27,8 @@ extension UdacityClient {
     }
     
     // MARK: Account
-    static let UserID = "key"
+    static let LastName = "last_name"
+    static let FirtstName = "first_name"
 
     // MARK: Parameter Keys
     struct ParameterKeys {
@@ -38,8 +39,13 @@ extension UdacityClient {
     // MARK: JSON Response Keys
     struct JSONResponseKeys {
         
+        static let UserAccount = "account"
+        static let UserKey = "key"
+        static let User = "user"
+        
         // MARK: Errors
         static let StatusErrorCode = "status"
         static let StatusErrorMessage = "error"
+        
     }
 }

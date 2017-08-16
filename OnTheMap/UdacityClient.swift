@@ -25,16 +25,31 @@ class UdacityClient: NSObject {
     
     // MARK: GET Methods
     
-    func getPublicUserData() {
-        let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/api/users/3903878747")!)
+    func getPublicUserData(completionHandlerForGetUSerData: @escaping (_ userName: String?, _ error: NSError?) -> Void) {
+        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Users)/\(self.userID!)")!)
         let session = URLSession.shared
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            if error != nil { // Handle error...
+            if error != nil {
+                completionHandlerForGetUSerData(nil, error as NSError?)
                 return
             }
             let range = Range(5..<data!.count)
-            let newData = data?.subdata(in: range) /* subset response data! */
-            print(NSString(data: newData!, encoding: String.Encoding.utf8.rawValue)!)
+            let newData = data?.subdata(in: range)
+            // parse the data
+            let parsedResult: [String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: newData!, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
+                completionHandlerForGetUSerData(nil, NSError(domain: "getPublicUserData", code: 99, userInfo: parsedError))
+                return
+            }
+            if let parsedUser = parsedResult[UdacityClient.JSONResponseKeys.User] as? [String:AnyObject] {
+                print(parsedUser[UdacityClient.LastName] as! String) //OK
+                print(parsedUser[UdacityClient.FirtstName] as! String) // OK
+                
+            }
+                        
         }
         task.resume()
     }
@@ -71,8 +86,8 @@ class UdacityClient: NSObject {
                 let errorDescription = [NSLocalizedDescriptionKey : "\(String(describing: statusErrorDescription!))"]
                 completionHandlerForNewSession(true, NSError(domain: "postNewSession", code: statusErrorCode, userInfo: errorDescription))
             } else {
-                if let parsedUserID = parsedResult["account"] as? [String:AnyObject] {
-                    self.userID = parsedUserID["key"] as? String
+                if let parsedUserID = parsedResult[UdacityClient.JSONResponseKeys.UserAccount] as? [String:AnyObject] {
+                    self.userID = parsedUserID[UdacityClient.JSONResponseKeys.UserKey] as? String
                 }
                 completionHandlerForNewSession(true, nil)
             }

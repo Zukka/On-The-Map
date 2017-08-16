@@ -26,8 +26,22 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         positionManager.delegate = self
         positionManager.desiredAccuracy = kCLLocationAccuracyBest
         positionManager.requestWhenInUseAuthorization()
+        
+        // Get user details
+        UdacityClient.sharedInstance().getPublicUserData() { (retrivedName, error) in
+            performUIUpdatesOnMain {
+                if let error = error {
+                    let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
+                    print(messageError)
+                } else {
+                    print("retrivedName: \(String(describing: retrivedName))")
+                }
+            }
+        }
+
     }
 
+    
     // MARK: - MapView
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
