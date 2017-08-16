@@ -135,7 +135,7 @@
         <!--Map-->
         <scene sceneID="lv8-rt-ssF">
             <objects>
-                <viewController id="gJG-Gr-OO5" customClass="MapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="gJG-Gr-OO5" customClass="StudentsMapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="plC-bO-fRr"/>
                         <viewControllerLayoutGuide type="bottom" id="KkS-Px-SUY"/>
@@ -143,13 +143,27 @@
                     <view key="view" contentMode="scaleToFill" id="ufr-6k-tE2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QfV-Hr-pXj">
+                                <rect key="frame" x="0.0" y="64" width="414" height="623"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="QfV-Hr-pXj" secondAttribute="trailing" id="EHf-y3-kaG"/>
+                            <constraint firstItem="QfV-Hr-pXj" firstAttribute="top" secondItem="plC-bO-fRr" secondAttribute="bottom" id="Ss1-01-u3I"/>
+                            <constraint firstItem="QfV-Hr-pXj" firstAttribute="leading" secondItem="ufr-6k-tE2" secondAttribute="leading" id="Vue-Rw-VAv"/>
+                            <constraint firstItem="KkS-Px-SUY" firstAttribute="top" secondItem="QfV-Hr-pXj" secondAttribute="bottom" id="bDs-oo-JqC"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" id="QV1-Su-hW6"/>
+                    <connections>
+                        <outlet property="studentsMapView" destination="QfV-Hr-pXj" id="tOt-pm-5Gc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lj7-KB-EZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1284" y="-323"/>
+            <point key="canvasLocation" x="1282.608695652174" y="-323.64130434782612"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kdK-f1-xxS">

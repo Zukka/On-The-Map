@@ -21,6 +21,9 @@ extension UdacityClient {
         
         // MARK: Session
         static let Session = "/api/session"
+        
+        // MARK: Users data
+        static let Users = "/api/users"
     }
     
     // MARK: Account
