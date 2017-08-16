@@ -23,6 +23,9 @@ extension UdacityClient {
         static let Session = "/api/session"
     }
     
+    // MARK: Account
+    static let UserID = "key"
+
     // MARK: Parameter Keys
     struct ParameterKeys {
         static let UserName = "username"

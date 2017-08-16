@@ -9,9 +9,9 @@
 import UIKit
 
 class UdacityClient: NSObject {
-    // MARK: Properties
-    // MARK: Var
     
+    // MARK: Properties
+    var userID : String? = nil
     var failLoginAlertView: UIAlertController?
 
     // shared session
@@ -55,6 +55,9 @@ class UdacityClient: NSObject {
                 let errorDescription = [NSLocalizedDescriptionKey : "\(String(describing: statusErrorDescription!))"]
                 completionHandlerForNewSession(true, NSError(domain: "postNewSession", code: statusErrorCode, userInfo: errorDescription))
             } else {
+                if let parsedUserID = parsedResult["account"] as? [String:AnyObject] {
+                    self.userID = parsedUserID["key"] as? String
+                }
                 completionHandlerForNewSession(true, nil)
             }
         }
