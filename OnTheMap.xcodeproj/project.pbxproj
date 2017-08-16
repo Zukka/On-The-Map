@@ -17,6 +17,7 @@
 		B66EA1761F3F475A00AF630E /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA1751F3F475A00AF630E /* UdacityConstants.swift */; };
 		B66EA17A1F3F51CA00AF630E /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA1791F3F51CA00AF630E /* UdacityConvenience.swift */; };
 		B66EA17C1F3F52AA00AF630E /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA17B1F3F52AA00AF630E /* GCDBlackBox.swift */; };
+		B6C6CD861F44373A00A1075A /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD851F44373A00A1075A /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		B66EA1751F3F475A00AF630E /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		B66EA1791F3F51CA00AF630E /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
 		B66EA17B1F3F52AA00AF630E /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		B6C6CD851F44373A00A1075A /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				B66EA1591F3F019900AF630E /* LoginViewController.swift */,
+				B6C6CD851F44373A00A1075A /* MapViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				B66EA1701F3F3C9E00AF630E /* UdacityClient.swift in Sources */,
 				B66EA17A1F3F51CA00AF630E /* UdacityConvenience.swift in Sources */,
 				B66EA17C1F3F52AA00AF630E /* GCDBlackBox.swift in Sources */,
+				B6C6CD861F44373A00A1075A /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +373,7 @@
 				B66EA1681F3F019900AF630E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

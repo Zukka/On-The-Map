@@ -41,22 +41,11 @@ class LoginViewController: UIViewController {
         UdacityClient.sharedInstance().postNewSession(username: textFieldEmail.text!, password: textFieldPassword.text!) { (success, error) in
             performUIUpdatesOnMain {
                 if let error = error {
-                    print(error)
-                }
-                if !success! {
-                    print("error: \(String(describing: error?.code)) \(String(describing: error?.description)))")
-                    let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription)))"
+                    let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
                     self.displayError(messageError)
-                    
                 } else {
-                    if error == nil {
-                        print("success! \(String(describing: success))")
-                    } else {
-                        let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
-                        self.displayError(messageError)
-                    }
+                    self.completeLogin()
                 }
-                
             }
         }
     }
@@ -66,7 +55,15 @@ class LoginViewController: UIViewController {
         UIApplication.shared.open(URL(string: "https://www.udacity.com/account/auth#!/signup")!)
         
     }
+    
+    // MARK: Login
+    
+    private func completeLogin() {
+        let controller = storyboard!.instantiateViewController(withIdentifier: "ManagerNavigationController") as! UINavigationController
+        present(controller, animated: true, completion: nil)
     }
+
+}
 
 // MARK: - LoginViewController (Configure UI)
 
