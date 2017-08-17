@@ -31,12 +31,12 @@ class LoginViewController: UIViewController {
     @IBAction func loginPressed(_ sender: Any) {
         
         guard textFieldEmail.text! != "" else {
-            showAlertView(message: loginErrors.emptyEmail)
+            showAlertView(message: LoginErrors.emptyEmail)
             return
         }
         
         guard textFieldPassword.text! != "" else {
-            showAlertView(message: loginErrors.emptyPassword)
+            showAlertView(message: LoginErrors.emptyPassword)
             return
         }
         startActivityIndicator()
@@ -82,16 +82,17 @@ class LoginViewController: UIViewController {
 
 private extension LoginViewController {
     
+    // MARK: Alert
     func displayError(_ errorString: String?) {
         if let errorString = errorString {
             showAlertView(message: errorString)
         }
     }
     
-    // MARK: Alert
+    
     func showAlertView(message: String) {
         
-        self.failLoginAlertView = UIAlertController(title: "On The Map",
+        self.failLoginAlertView = UIAlertController(title: Constants.appName,
                                                  message: message,
                                                  preferredStyle: .alert)
         // Add action for close alert view

@@ -18,6 +18,8 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     var userPosition: CLLocationCoordinate2D!
     var updatedUserPosition : Bool = false
     
+    var mapAlertView: UIAlertController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,17 +31,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         positionManager.desiredAccuracy = kCLLocationAccuracyBest
         positionManager.requestWhenInUseAuthorization()
         
-        // Get user details
-        UdacityClient.sharedInstance().getPublicUserData() { (retrivedName, error) in
-            performUIUpdatesOnMain {
-                if let error = error {
-                    let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
-                    print(messageError)
-                } else {
-                    print("retrivedName: \(String(describing: retrivedName))")
-                }
-            }
-        }
         // Get Students location
         UdacityClient.sharedInstance().getStudentsLocation() { (studentsList, error) in
             performUIUpdatesOnMain {
@@ -55,7 +46,31 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     }
 
     
-    // MARK: - MapView
+    
+    // MARK: - MKMapViewDelegate
+    
+    // Here we create a view with a "right callout accessory view". You might choose to look into other
+    // decoration alternatives. Notice the similarity between this method and the cellForRowAtIndexPath
+    // method in TableViewDataSource.
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let reuseId = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView!.canShowCallout = true
+            pinView!.pinTintColor = .red
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+        
+        return pinView
+    }
+
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         
@@ -71,7 +86,24 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         }
         
     }
+    
+    // This delegate method is implemented to respond to taps. It opens the system browser
+    // to the URL specified in the annotationViews subtitle property.
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control == view.rightCalloutAccessoryView {
+            if let toOpen = view.annotation?.subtitle! {
+                let isValidLink = NSURL(string: toOpen)
+                if (isValidLink != nil) {
+                    UIApplication.shared.open(URL(string: toOpen)!)
+                } else {
+                    showAlertView(message: MapErrors.brokedLink)
+                }
+            }
+        }
+    }
 
+    // MARK: func
+    
     func addStudentsPinToMap(locations: [[String: Any?]]) {
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
@@ -109,6 +141,22 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         }
         // When the array is complete, we add the annotations to the map.
         self.studentsMapView.addAnnotations(annotations)
+    }
+
+    
+    func showAlertView(message: String) {
+        
+        self.mapAlertView = UIAlertController(title: Constants.appName,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+        // Add action for close alert view
+        let action = UIAlertAction(title: "Close", style: UIAlertActionStyle.default,
+                                   handler: {(paramAction :UIAlertAction!) in
+                                    
+        })
+        mapAlertView!.addAction(action)
+        
+        present(mapAlertView!, animated: true, completion: nil)
     }
 
 }

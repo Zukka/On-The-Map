@@ -12,6 +12,8 @@ class UdacityClient: NSObject {
     
     // MARK: Properties
     var userID : String? = nil
+    var userFullName : String? = nil
+    
     var failLoginAlertView: UIAlertController?
 
     // shared session
@@ -24,7 +26,6 @@ class UdacityClient: NSObject {
     }
     
     // MARK: GET Methods
-    
     
     func getPublicUserData(completionHandlerForGetUSerData: @escaping (_ userName: String?, _ error: NSError?) -> Void) {
         let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Users)/\(self.userID!)")!)
@@ -46,9 +47,9 @@ class UdacityClient: NSObject {
                 return
             }
             if let parsedUser = parsedResult[UdacityClient.JSONResponseKeys.User] as? [String:AnyObject] {
-                print(parsedUser[UdacityClient.LastName] as! String) //OK
-                print(parsedUser[UdacityClient.FirtstName] as! String) // OK
-                
+                let surname = parsedUser[UdacityClient.LastName] as! String
+                let fullName = parsedUser[UdacityClient.FirtstName] as! String + " " + surname
+                completionHandlerForGetUSerData(fullName,nil)
             }
                         
         }
@@ -65,7 +66,6 @@ class UdacityClient: NSObject {
             if error != nil { // Handle error...
                 return
             }
-//            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
             // parse the data
             let parsedResult: [String:AnyObject]!
             do {
@@ -80,9 +80,6 @@ class UdacityClient: NSObject {
                 print(parsedUser)
                 completionHandlerGETStudendsLocation(parsedUser,nil)
             }
-
-//            print(parsedResult)
-           // completionHandlerGETStudendsLocation(parsedResult,nil)
         }
         task.resume()
     }
@@ -122,7 +119,13 @@ class UdacityClient: NSObject {
                     self.userID = parsedUserID[UdacityClient.JSONResponseKeys.UserKey] as? String
                 }
                 completionHandlerForNewSession(true, nil)
-                
+                // GET user details (firstname and lastname)
+                self.getPublicUserData(completionHandlerForGetUSerData: { (userData, error) in
+                    if userData != nil {
+                        self.userFullName = userData!
+                    }
+                    print(self.userFullName!)
+                })
             }
         }
         task.resume()
