@@ -24,13 +24,13 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         super.viewDidLoad()
         
         // Retrive User position
-        
+     
         self.studentsMapView.delegate = self
         self.positionManager = CLLocationManager()
         positionManager.delegate = self
         positionManager.desiredAccuracy = kCLLocationAccuracyBest
         positionManager.requestWhenInUseAuthorization()
-        
+     
         // Get Students location
         UdacityClient.sharedInstance().getStudentsLocation() { (studentsList, error) in
             performUIUpdatesOnMain {
@@ -71,7 +71,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         return pinView
     }
 
-    
+  /*
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         
         if (self.updatedUserPosition == false) {
@@ -86,12 +86,13 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         }
         
     }
-    
+    */
     // This delegate method is implemented to respond to taps. It opens the system browser
     // to the URL specified in the annotationViews subtitle property.
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             if let toOpen = view.annotation?.subtitle! {
+                // Check if link is valid before open it
                 let isValidLink = NSURL(string: toOpen)
                 if (isValidLink != nil) {
                     UIApplication.shared.open(URL(string: toOpen)!)
@@ -141,6 +142,8 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         }
         // When the array is complete, we add the annotations to the map.
         self.studentsMapView.addAnnotations(annotations)
+        
+        print("Total Locations are: \(locations.count)")
     }
 
     

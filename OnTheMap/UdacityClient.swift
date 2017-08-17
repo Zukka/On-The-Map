@@ -57,7 +57,7 @@ class UdacityClient: NSObject {
     }
     
     func getStudentsLocation(completionHandlerGETStudendsLocation: @escaping (_ result: [[String : Any]]?, _ error: NSError?) -> Void) {
-        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Parse.ApiHost)\(UdacityClient.Methods.StudentsLocation)/)")!)
+        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Parse.ApiHost)\(UdacityClient.Methods.StudentsLocation)")!)
         
         request.addValue(UdacityClient.Parse.AppID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(UdacityClient.Parse.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
