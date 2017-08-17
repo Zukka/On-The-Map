@@ -56,7 +56,6 @@ class LoginViewController: UIViewController {
     // Open safari in app for sign up
     @IBAction func signUpPressed(_ sender: Any) {
         UIApplication.shared.open(URL(string: "https://www.udacity.com/account/auth#!/signup")!)
-        
     }
     
     // MARK: Login

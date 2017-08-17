@@ -25,6 +25,7 @@ class UdacityClient: NSObject {
     
     // MARK: GET Methods
     
+    
     func getPublicUserData(completionHandlerForGetUSerData: @escaping (_ userName: String?, _ error: NSError?) -> Void) {
         let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Users)/\(self.userID!)")!)
         let session = URLSession.shared
@@ -54,6 +55,37 @@ class UdacityClient: NSObject {
         task.resume()
     }
     
+    func getStudentsLocation(completionHandlerGETStudendsLocation: @escaping (_ result: [[String : Any]]?, _ error: NSError?) -> Void) {
+        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Parse.ApiHost)\(UdacityClient.Methods.StudentsLocation)/)")!)
+        
+        request.addValue(UdacityClient.Parse.AppID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(UdacityClient.Parse.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let session = URLSession.shared
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            if error != nil { // Handle error...
+                return
+            }
+//            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
+            // parse the data
+            let parsedResult: [String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
+                completionHandlerGETStudendsLocation(nil, NSError(domain: "postNewSession", code: 99, userInfo: parsedError))
+                return
+            }
+            print("parsed!")
+            if let parsedUser = parsedResult["results"] as? [[String: AnyObject]] {
+                print(parsedUser)
+                completionHandlerGETStudendsLocation(parsedUser,nil)
+            }
+
+//            print(parsedResult)
+           // completionHandlerGETStudendsLocation(parsedResult,nil)
+        }
+        task.resume()
+    }
     // MARK: POST Methods
  
     func postNewSession( username: String,  password: String, completionHandlerForNewSession: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
@@ -90,6 +122,7 @@ class UdacityClient: NSObject {
                     self.userID = parsedUserID[UdacityClient.JSONResponseKeys.UserKey] as? String
                 }
                 completionHandlerForNewSession(true, nil)
+                
             }
         }
         task.resume()

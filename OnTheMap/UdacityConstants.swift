@@ -16,6 +16,12 @@ extension UdacityClient {
         static let ApiHost = "www.udacity.com"
     }
     
+    // MARK : Parse
+    struct Parse {
+        static let ApiKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+        static let AppID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
+        static let ApiHost = "parse.udacity.com"
+    }
     // MARK: Methods
     struct Methods {
         
@@ -24,6 +30,9 @@ extension UdacityClient {
         
         // MARK: Users data
         static let Users = "/api/users"
+        
+        // MARK: Parse Students location
+        static let StudentsLocation = "/parse/classes/StudentLocation?limit=100"
     }
     
     // MARK: Account
