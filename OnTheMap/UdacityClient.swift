@@ -56,7 +56,7 @@ class UdacityClient: NSObject {
         task.resume()
     }
     
-    func getStudentsLocation(completionHandlerGETStudendsLocation: @escaping (_ result: [[String : Any]]?, _ error: NSError?) -> Void) {
+    func getStudentsLocation(completionHandlerGETStudendsLocation: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
         let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Parse.ApiHost)\(UdacityClient.Methods.StudentsLocation)")!)
         
         request.addValue(UdacityClient.Parse.AppID, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -72,13 +72,12 @@ class UdacityClient: NSObject {
                 parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
             } catch {
                 let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
-                completionHandlerGETStudendsLocation(nil, NSError(domain: "postNewSession", code: 99, userInfo: parsedError))
+                completionHandlerGETStudendsLocation(true, NSError(domain: "postNewSession", code: 99, userInfo: parsedError))
                 return
             }
-            print("parsed!")
             if let parsedUser = parsedResult["results"] as? [[String: AnyObject]] {
-                print(parsedUser)
-                completionHandlerGETStudendsLocation(parsedUser,nil)
+                UdacityStudent.studentsFromResults(parsedUser)
+                completionHandlerGETStudendsLocation(true, nil)
             }
         }
         task.resume()
@@ -123,8 +122,9 @@ class UdacityClient: NSObject {
                 self.getPublicUserData(completionHandlerForGetUSerData: { (userData, error) in
                     if userData != nil {
                         self.userFullName = userData!
+                    } else {
+                        self.userFullName = "Unnamed student"
                     }
-                    print(self.userFullName!)
                 })
             }
         }

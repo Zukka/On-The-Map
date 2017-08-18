@@ -36,20 +36,28 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         positionManager.requestWhenInUseAuthorization()
      
         // Get Students location
-        UdacityClient.sharedInstance().getStudentsLocation() { (studentsList, error) in
+        UdacityClient.sharedInstance().getStudentsLocation() { (success, error) in
             performUIUpdatesOnMain {
                 if let error = error {
                     let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
                     print(messageError)
                 } else {
-                    print("list: \(studentsList!))")
-                    self.addStudentsPinToMap(locations: studentsList!)
+                    let object = UIApplication.shared.delegate
+                    let appDelegate = object as! AppDelegate
+                    self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
                 }
             }
         }
     }
 
-    
+    override func viewDidAppear(_ animated: Bool) {
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+
+        if appDelegate.udacityStudents.count > 0 {
+            self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
+        }
+    }
     
     // MARK: - MKMapViewDelegate
     
@@ -75,22 +83,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         return pinView
     }
 
-  /*
-    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        
-        if (self.updatedUserPosition == false) {
-            self.userPosition = userLocation.coordinate
-            
-            print("last updated position - lat: \(userLocation.coordinate.latitude) long: \(userLocation.coordinate.longitude)")
-            let span = MKCoordinateSpanMake(0.1, 0.1)
-            let region = MKCoordinateRegion(center: userPosition, span: span)
-            
-            mapView.setRegion(region, animated: true)
-            self.updatedUserPosition = true
-        }
-        
-    }
-    */
     // This delegate method is implemented to respond to taps. It opens the system browser
     // to the URL specified in the annotationViews subtitle property.
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
@@ -108,35 +100,32 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     }
 
     // MARK: func
-    
-    func addStudentsPinToMap(locations: [[String: Any?]]) {
+    func addStudentsPinToMap(locations: [UdacityStudent])  {
         
         // The "locations" array is loaded with the sample data below. We are using the dictionaries
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
         annotations.removeAll()
-        
         for dictionary in locations {
-            
             // Check if latitude and longitude have a value for prevent an error
-            if dictionary["latitude"] != nil && dictionary["longitude"] != nil {
+            if dictionary.latitude != -999999 && dictionary.longitude != -999999 {
                 // Notice that the float values are being used to create CLLocationDegree values.
                 // This is a version of the Double type.
-                let lat = CLLocationDegrees(dictionary["latitude"] as! Double)
-                let long = CLLocationDegrees(dictionary["longitude"] as! Double)
+                let lat = CLLocationDegrees(dictionary.latitude)
+                let long = CLLocationDegrees(dictionary.longitude)
                 
                 // The lat and long are used to create a CLLocationCoordinates2D instance.
                 let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 
-                let first = dictionary["firstName"] as? String
-                let last = dictionary["lastName"] as? String
-                let mediaURL = dictionary["mediaURL"] as? String
+                let first = dictionary.firstName
+                let last = dictionary.lastName
+                let mediaURL = dictionary.mediaURL
                 
                 // Here we create the annotation and set its coordiate, title, and subtitle properties
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
-                annotation.title = "\(first ?? "") \(last ?? "")"
-                annotation.subtitle = mediaURL ?? ""
+                annotation.title = "\(first) \(last)"
+                annotation.subtitle = mediaURL
                 
                 // Finally we place the annotation in an array of annotations.
                 annotations.append(annotation)
@@ -147,7 +136,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         print("Total Locations are: \(locations.count)")
     }
-
     
     func showAlertView(message: String) {
         
@@ -163,5 +151,14 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         present(mapAlertView!, animated: true, completion: nil)
     }
-
+    
+    
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     
 }

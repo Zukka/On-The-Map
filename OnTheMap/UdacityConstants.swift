@@ -51,6 +51,11 @@ extension UdacityClient {
         static let UserAccount = "account"
         static let UserKey = "key"
         static let User = "user"
+        static let FirstName = "firstName"
+        static let LastName = "lastName"
+        static let MediaURL = "mediaURL"
+        static let Latitude = "latitude"
+        static let Longitude = "longitude"
         
         // MARK: Errors
         static let StatusErrorCode = "status"

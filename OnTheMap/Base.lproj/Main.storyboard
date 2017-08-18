@@ -163,7 +163,7 @@
                             <constraint firstItem="KkS-Px-SUY" firstAttribute="top" secondItem="QfV-Hr-pXj" secondAttribute="bottom" id="bDs-oo-JqC"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" id="QV1-Su-hW6"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="mapviewDeselected" selectedImage="mapviewSelected" id="QV1-Su-hW6"/>
                     <connections>
                         <outlet property="studentsMapView" destination="QfV-Hr-pXj" id="tOt-pm-5Gc"/>
                     </connections>
@@ -278,7 +278,7 @@
                             <outlet property="delegate" destination="kKh-qc-T8a" id="UB5-Ll-SFZ"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="List" id="xVB-Vw-6Sr"/>
+                    <tabBarItem key="tabBarItem" title="List" image="listviewDeselected" selectedImage="listviewSelected" id="xVB-Vw-6Sr"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3d-XL-G0o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -286,7 +286,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="listviewDeselected" width="75" height="50"/>
+        <image name="listviewSelected" width="75" height="50"/>
         <image name="logo" width="62" height="62"/>
+        <image name="mapviewDeselected" width="75" height="50"/>
+        <image name="mapviewSelected" width="75" height="50"/>
         <image name="pin" width="24" height="24"/>
     </resources>
 </document>
