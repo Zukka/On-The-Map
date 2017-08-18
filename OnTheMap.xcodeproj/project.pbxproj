@@ -21,6 +21,7 @@
 		B6C6CD8E1F45DFE000A1075A /* StudentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD8D1F45DFE000A1075A /* StudentsTableViewController.swift */; };
 		B6C6CD911F45E57C00A1075A /* StudentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD901F45E57C00A1075A /* StudentTableViewCell.swift */; };
 		B6C6CD951F46003C00A1075A /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD941F46003C00A1075A /* UdacityStudent.swift */; };
+		B6C6CD991F474A8900A1075A /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD981F474A8900A1075A /* PostingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		B6C6CD8D1F45DFE000A1075A /* StudentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentsTableViewController.swift; sourceTree = "<group>"; };
 		B6C6CD901F45E57C00A1075A /* StudentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentTableViewCell.swift; sourceTree = "<group>"; };
 		B6C6CD941F46003C00A1075A /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
+		B6C6CD981F474A8900A1075A /* PostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			children = (
 				B66EA1591F3F019900AF630E /* LoginViewController.swift */,
 				B6C6CD871F443D0B00A1075A /* AppTabBarViewController.swift */,
+				B6C6CD981F474A8900A1075A /* PostingViewController.swift */,
 				B6C6CD8D1F45DFE000A1075A /* StudentsTableViewController.swift */,
 				B6C6CD851F44373A00A1075A /* StudentsMapViewController.swift */,
 			);
@@ -224,6 +227,7 @@
 				B66EA1761F3F475A00AF630E /* UdacityConstants.swift in Sources */,
 				B6C6CD951F46003C00A1075A /* UdacityStudent.swift in Sources */,
 				B66EA1721F3F3D8D00AF630E /* Errors.swift in Sources */,
+				B6C6CD991F474A8900A1075A /* PostingViewController.swift in Sources */,
 				B66EA1581F3F019900AF630E /* AppDelegate.swift in Sources */,
 				B6C6CD881F443D0B00A1075A /* AppTabBarViewController.swift in Sources */,
 				B66EA1701F3F3C9E00AF630E /* UdacityClient.swift in Sources */,
