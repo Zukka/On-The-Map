@@ -13,16 +13,12 @@ class AppTabBarViewController: UITabBarController {
     // MARK: Var
     
     var failLogoutAlertView: UIAlertController?
-
-    override func viewDidLoad() {
+    static var indicator = UIActivityIndicatorView()
+        override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+            activityIndicator()
     }
     
     // MARK: - IBAction
@@ -40,11 +36,38 @@ class AppTabBarViewController: UITabBarController {
         })
      }
 
+    @IBAction func refreshPressed(_ sender: Any) {
+        
+        AppTabBarViewController.indicator.startAnimating()
+        UdacityClient.sharedInstance().getStudentsLocation() { (success, error) in
+            performUIUpdatesOnMain {
+                // stop activity indicator
+                AppTabBarViewController.indicator.stopAnimating()
+                if let error = error {
+                    let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
+                    self.showAlertView(message: messageError)
+                    print(messageError)
+                } else {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadList"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMap"), object: nil)
+                }
+            }
+        }
+            
+    }
     // MARK : func
     
     func completeLogout() {
         dismiss(animated: true, completion: nil)
     }
+    
+    func activityIndicator() {
+        AppTabBarViewController.indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+        AppTabBarViewController.indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        AppTabBarViewController.indicator.center = self.view.center
+        self.view.addSubview(AppTabBarViewController.indicator)
+    }
+
 }
 
 // MARK: - LoginViewController Alerts

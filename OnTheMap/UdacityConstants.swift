@@ -32,7 +32,7 @@ extension UdacityClient {
         static let Users = "/api/users"
         
         // MARK: Parse Students location
-        static let StudentsLocation = "/parse/classes/StudentLocation?limit=100"
+        static let StudentsLocation = "/parse/classes/StudentLocation?limit=100&order=-updatedAt"
     }
     
     // MARK: Account

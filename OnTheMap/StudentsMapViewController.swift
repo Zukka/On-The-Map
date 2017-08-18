@@ -20,11 +20,12 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     // We will create an MKPointAnnotation for each dictionary in "locations". The
     // point annotations will be stored in this array, and then provided to the map view.
     var annotations = [MKPointAnnotation]()
-
     var mapAlertView: UIAlertController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadDataMap), name: NSNotification.Name(rawValue: "loadMap"), object: nil)
         
         // Retrive User position
      
@@ -33,19 +34,22 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         positionManager.delegate = self
         positionManager.desiredAccuracy = kCLLocationAccuracyBest
         positionManager.requestWhenInUseAuthorization()
-     
+        AppTabBarViewController.indicator.startAnimating()
         // Get Students location
         UdacityClient.sharedInstance().getStudentsLocation() { (success, error) in
             performUIUpdatesOnMain {
+                // stop activity indicator
+                AppTabBarViewController.indicator.stopAnimating()
                 if let error = error {
                     let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
-                    print(messageError)
+                    self.showAlertView(message: messageError)
                 } else {
                     let object = UIApplication.shared.delegate
                     let appDelegate = object as! AppDelegate
                     self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
                 }
             }
+
         }
     }
 
@@ -97,7 +101,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
             }
         }
     }
-
+    
     // MARK: func
     func addStudentsPinToMap(locations: [UdacityStudent])  {
         
@@ -135,6 +139,13 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         
     }
     
+    
+    func reloadDataMap(){
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
+    }
+
     func showAlertView(message: String) {
         
         self.mapAlertView = UIAlertController(title: Constants.appName,

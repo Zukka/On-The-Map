@@ -32,12 +32,13 @@ struct UdacityStudent {
     
     static func studentsFromResults(_ results: [[String:AnyObject]]) {
         
+        // Add it to the students dictionary in the Application Delegate
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.udacityStudents.removeAll()
         // iterate through array of dictionaries, each Movie is a dictionary
         for result in results {
-        
-            // Add it to the students dictionary in the Application Delegate
-            let object = UIApplication.shared.delegate
-            let appDelegate = object as! AppDelegate
+            
             appDelegate.udacityStudents.append(UdacityStudent(dictionary: result))
 
         }

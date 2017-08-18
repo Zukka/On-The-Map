@@ -22,12 +22,12 @@ class StudentsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadDataList), name: NSNotification.Name(rawValue: "loadList"), object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         studentsTableView.reloadData()
     }
     
@@ -50,6 +50,10 @@ class StudentsTableViewController: UITableViewController {
     }
 
     // MARK: func
+    
+    func reloadDataList(){
+        self.tableView.reloadData()
+    }
     
     func showAlertView(message: String) {
         
