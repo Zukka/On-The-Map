@@ -20,6 +20,7 @@ struct LoginErrors {
 }
 
 // MARK: StudentMapViewController
-struct MapErrors {
+struct LinkErrors {
     static let brokedLink = "Link is not valid!"
+    static let linkEmpty = "Link is empty!"
 }

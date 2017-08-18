@@ -21,7 +21,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     // point annotations will be stored in this array, and then provided to the map view.
     var annotations = [MKPointAnnotation]()
 
-    
     var mapAlertView: UIAlertController?
     
     override func viewDidLoad() {
@@ -93,7 +92,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
                 if (isValidLink != nil) {
                     UIApplication.shared.open(URL(string: toOpen)!)
                 } else {
-                    showAlertView(message: MapErrors.brokedLink)
+                    showAlertView(message: LinkErrors.brokedLink)
                 }
             }
         }
@@ -134,7 +133,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         // When the array is complete, we add the annotations to the map.
         self.studentsMapView.addAnnotations(annotations)
         
-        print("Total Locations are: \(locations.count)")
     }
     
     func showAlertView(message: String) {
@@ -143,7 +141,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
                                                     message: message,
                                                     preferredStyle: .alert)
         // Add action for close alert view
-        let action = UIAlertAction(title: "Close", style: UIAlertActionStyle.default,
+        let action = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,
                                    handler: {(paramAction :UIAlertAction!) in
                                     
         })
@@ -152,13 +150,4 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         present(mapAlertView!, animated: true, completion: nil)
     }
     
-    
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     
 }

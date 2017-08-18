@@ -15,7 +15,11 @@ class StudentsTableViewController: UITableViewController {
     
     // MARK: Constant
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
+    
+    // MARK: Var
+    var tableAlertView: UIAlertController?
+    var selectedMediaURL: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,14 +49,51 @@ class StudentsTableViewController: UITableViewController {
         return cell
     }
 
-    /*
+    // MARK: func
+    
+    func showAlertView(message: String) {
+        
+        self.tableAlertView = UIAlertController(title: Constants.appName,
+                                              message: message,
+                                              preferredStyle: .alert)
+        // Add action for close alert view
+        let action = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,
+                                   handler: {(paramAction :UIAlertAction!) in
+                                    
+        })
+        tableAlertView!.addAction(action)
+        
+        present(tableAlertView!, animated: true, completion: nil)
+    }
+    
+    func openMediaURL(urlString: String) {
+        guard urlString != "" else {
+            showAlertView(message: LinkErrors.linkEmpty)
+            return
+        }
+        // Check if link is valid before open it
+        let isValidLink = NSURL(string: urlString)
+        if (isValidLink != nil) {
+            UIApplication.shared.open(URL(string: urlString)!)
+        } else {
+            showAlertView(message: LinkErrors.brokedLink)
+        }
+    }
+    
     // MARK: - Navigation
-
+    
+    // Prepare and open MemeDetailViewController when tap on item list
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedMediaURL = appDelegate.udacityStudents[indexPath.item].mediaURL
+        // Call func for check the link and open it (if is ok)
+        openMediaURL(urlString: selectedMediaURL!)
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
-
+    
+    
 }
