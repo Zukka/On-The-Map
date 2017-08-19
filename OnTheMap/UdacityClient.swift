@@ -13,8 +13,7 @@ class UdacityClient: NSObject {
     // MARK: Properties
     var userID : String? = nil
     var userFullName : String? = nil
-    
-    var failLoginAlertView: UIAlertController?
+    var userLocationShared: Bool = false
 
     // shared session
     var session = URLSession.shared
@@ -26,6 +25,41 @@ class UdacityClient: NSObject {
     }
     
     // MARK: GET Methods
+    func getStudentHaveSharedLocation(completionHandlerForGetUserLocation: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+//        let urlString = "https://parse.udacity.com/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%2284247231%22%7D"
+        let urlString = "https://parse.udacity.com/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%2284247%22%7D"
+        let url = URL(string: urlString)
+        let request = NSMutableURLRequest(url: url!)
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let session = URLSession.shared
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            if error != nil {
+                completionHandlerForGetUserLocation(false, error as NSError?)
+                return
+            }
+            
+            // parse the data
+            let parsedResult: [String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
+                completionHandlerForGetUserLocation(false, NSError(domain: "getStudentHaveSharedLocation", code: 99, userInfo: parsedError))
+                return
+            }
+            if let parsedLocation = parsedResult["results"] as? [[String:AnyObject]] {
+               // Check if user have shared a location and set var userLocationShared
+                for items in parsedLocation {
+                     self.userLocationShared = !items.keys.isEmpty
+                    
+                }
+                completionHandlerForGetUserLocation(self.userLocationShared, nil)
+            }
+                       
+        }
+        task.resume()
+    }
     
     func getPublicUserData(completionHandlerForGetUSerData: @escaping (_ userName: String?, _ error: NSError?) -> Void) {
         let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Users)/\(self.userID!)")!)
@@ -63,7 +97,8 @@ class UdacityClient: NSObject {
         request.addValue(UdacityClient.Parse.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let session = URLSession.shared
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            if error != nil { // Handle error...
+            if error != nil {
+                completionHandlerGETStudendsLocation(false, error as NSError?)
                 return
             }
             // parse the data
@@ -122,6 +157,14 @@ class UdacityClient: NSObject {
                 self.getPublicUserData(completionHandlerForGetUSerData: { (userData, error) in
                     if userData != nil {
                         self.userFullName = userData!
+                        // GET if user have shared is student location
+                        self.getStudentHaveSharedLocation(completionHandlerForGetUserLocation: { (success, error) in
+                            if error != nil {
+                                print("error")
+                            } else {
+                                self.userLocationShared = success
+                            }
+                        })
                     } else {
                         self.userFullName = "Unnamed student"
                     }

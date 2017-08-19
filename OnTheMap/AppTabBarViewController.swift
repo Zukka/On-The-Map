@@ -36,6 +36,19 @@ class AppTabBarViewController: UITabBarController {
         })
      }
 
+    @IBAction func postLocationPressed(_ sender: Any) {
+        print(UdacityClient.sharedInstance().userFullName!)
+        UdacityClient.sharedInstance().getStudentHaveSharedLocation { (success, error) in
+            if let error = error {
+                let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
+                self.showAlertView(message: messageError)
+                print(messageError)
+            } else {
+                print(UdacityClient.sharedInstance().userLocationShared)
+            }
+        }
+    }
+    
     @IBAction func refreshPressed(_ sender: Any) {
         
         AppTabBarViewController.indicator.startAnimating()
@@ -53,7 +66,7 @@ class AppTabBarViewController: UITabBarController {
                 }
             }
         }
-            
+        
     }
     // MARK : func
     
