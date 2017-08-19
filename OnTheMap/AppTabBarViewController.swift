@@ -13,8 +13,11 @@ class AppTabBarViewController: UITabBarController {
     // MARK: Var
     
     var failLogoutAlertView: UIAlertController?
+    var queryUpdateAlertView: UIAlertController?
+    
     static var indicator = UIActivityIndicatorView()
-        override func viewDidLoad() {
+    
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
@@ -38,14 +41,8 @@ class AppTabBarViewController: UITabBarController {
 
     @IBAction func postLocationPressed(_ sender: Any) {
         print(UdacityClient.sharedInstance().userFullName!)
-        UdacityClient.sharedInstance().getStudentHaveSharedLocation { (success, error) in
-            if let error = error {
-                let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
-                self.showAlertView(message: messageError)
-                print(messageError)
-            } else {
-                print(UdacityClient.sharedInstance().userLocationShared)
-            }
+        if UdacityClient.sharedInstance().userLocationShared {
+            showRequestUpdatePosition(message: "User \"\(UdacityClient.sharedInstance().userFullName!)\" has already posted a Student Location. Would you like to overwrite their location?")
         }
     }
     
@@ -59,10 +56,8 @@ class AppTabBarViewController: UITabBarController {
                 if let error = error {
                     let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
                     self.showAlertView(message: messageError)
-                    print(messageError)
                 } else {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadList"), object: nil)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMap"), object: nil)
+                    self.refreshStudentsPosition()
                 }
             }
         }
@@ -81,6 +76,10 @@ class AppTabBarViewController: UITabBarController {
         self.view.addSubview(AppTabBarViewController.indicator)
     }
 
+    func refreshStudentsPosition() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadList"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMap"), object: nil)
+    }
 }
 
 // MARK: - LoginViewController Alerts
@@ -93,10 +92,11 @@ private extension AppTabBarViewController {
         }
     }
     
-    // MARK: Alert
+    // MARK: AlertView
+    
     func showAlertView(message: String) {
         
-        self.failLogoutAlertView = UIAlertController(title: "On The Map",
+        failLogoutAlertView = UIAlertController(title: "On The Map",
                                                     message: message,
                                                     preferredStyle: .alert)
         // Add action for close alert view
@@ -107,5 +107,27 @@ private extension AppTabBarViewController {
         failLogoutAlertView!.addAction(action)
         
         present(failLogoutAlertView!, animated: true, completion: nil)
+    }
+    
+    func showRequestUpdatePosition(message: String) {
+        
+        queryUpdateAlertView = UIAlertController(title: "On The Map",
+                                                     message: message,
+                                                     preferredStyle: .alert)
+        // Add actions
+        let actionOk = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default,
+                                   handler: {(paramAction :UIAlertAction!) in
+                                    
+        })
+        let actionCancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel,
+                                   handler: {(paramAction :UIAlertAction!) in
+                                    self.refreshPressed((Any).self)
+                                    
+        })
+        queryUpdateAlertView!.addAction(actionOk)
+        queryUpdateAlertView!.addAction(actionCancel)
+        
+        present(queryUpdateAlertView!, animated: true, completion: nil)
+
     }
 }
