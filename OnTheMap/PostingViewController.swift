@@ -23,10 +23,11 @@ class PostingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // add corner to search button
+        // add corner to buttons
         searchButton.addCorner(value: 10)
-        searchView.isHidden = false
-        resultView.isHidden = true
+        submitButton.addCorner(value: 10)
+        
+        startLayout()
     }
 
     // MARK: @IBAction
@@ -43,6 +44,11 @@ class PostingViewController: UIViewController {
     
     @IBAction func submitPressed(_ sender: Any) {
         
+    }
+    
+    func startLayout() {
+        searchView.isHidden = false
+        resultView.isHidden = true
     }
     /*
     // MARK: - Navigation
