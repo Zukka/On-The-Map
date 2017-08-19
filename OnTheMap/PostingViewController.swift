@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import MapKit
 
 class PostingViewController: UIViewController {
 
+    // Search - first group start visible
+    @IBOutlet weak var searchView: UIView!
+    
+    
+    // Result - second group start hidden
+    @IBOutlet weak var resultView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
