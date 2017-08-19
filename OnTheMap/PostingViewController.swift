@@ -19,16 +19,30 @@ class PostingViewController: UIViewController {
     
     // Result - second group start hidden
     @IBOutlet weak var resultView: UIView!
+    @IBOutlet weak var submitButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // add corner to search button
         searchButton.addCorner(value: 10)
+        searchView.isHidden = false
+        resultView.isHidden = true
     }
 
-
+    // MARK: @IBAction
+    
     @IBAction func cancelPosting(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+    
+ 
+    @IBAction func searchPressed(_ sender: Any) {
+        searchView.isHidden = true
+        resultView.isHidden = false
+    }
+    
+    @IBAction func submitPressed(_ sender: Any) {
+        
     }
     /*
     // MARK: - Navigation
