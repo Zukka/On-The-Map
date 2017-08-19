@@ -24,6 +24,10 @@ class AppTabBarViewController: UITabBarController {
             activityIndicator()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        refreshPressed((Any).self)
+    }
+    
     // MARK: - IBAction
 
      @IBAction func logoutPressed(_ sender: Any) {
@@ -40,14 +44,15 @@ class AppTabBarViewController: UITabBarController {
      }
 
     @IBAction func postLocationPressed(_ sender: Any) {
-        print(UdacityClient.sharedInstance().userFullName!)
         if UdacityClient.sharedInstance().userLocationShared {
             showRequestUpdatePosition(message: "User \"\(UdacityClient.sharedInstance().userFullName!)\" has already posted a Student Location. Would you like to overwrite their location?")
+        } else {
+            openPostViewController()
         }
     }
     
     @IBAction func refreshPressed(_ sender: Any) {
-        
+        print("Refresh Pressed")
         AppTabBarViewController.indicator.startAnimating()
         UdacityClient.sharedInstance().getStudentsLocation() { (success, error) in
             performUIUpdatesOnMain {
@@ -79,6 +84,11 @@ class AppTabBarViewController: UITabBarController {
     func refreshStudentsPosition() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadList"), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadMap"), object: nil)
+    }
+    
+    func openPostViewController() {
+        self.performSegue(withIdentifier: "segueToPosting", sender: nil)
+        
     }
 }
 
@@ -117,12 +127,13 @@ private extension AppTabBarViewController {
         // Add actions
         let actionOk = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default,
                                    handler: {(paramAction :UIAlertAction!) in
+                                    self.openPostViewController()
                                     
         })
         let actionCancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel,
                                    handler: {(paramAction :UIAlertAction!) in
                                     self.refreshPressed((Any).self)
-                                    
+                                   
         })
         queryUpdateAlertView!.addAction(actionOk)
         queryUpdateAlertView!.addAction(actionCancel)
@@ -130,4 +141,5 @@ private extension AppTabBarViewController {
         present(queryUpdateAlertView!, animated: true, completion: nil)
 
     }
+    
 }
