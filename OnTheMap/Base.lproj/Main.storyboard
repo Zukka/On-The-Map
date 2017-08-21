@@ -410,10 +410,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="resultMapView" destination="dHn-o3-lme" id="L6Q-rY-Haj"/>
                         <outlet property="resultView" destination="9zM-oE-KX1" id="gF1-kp-PNW"/>
                         <outlet property="searchButton" destination="01p-GM-65S" id="bfX-r1-qOX"/>
                         <outlet property="searchView" destination="Hsg-q4-J2m" id="01L-WJ-vhI"/>
                         <outlet property="submitButton" destination="dHb-6W-XOS" id="dnL-EC-N7v"/>
+                        <outlet property="textFieldLink" destination="ydY-di-338" id="7hO-ex-caH"/>
+                        <outlet property="textFieldPlace" destination="maR-8v-2jT" id="F9L-1S-Bhl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z0n-4y-LlS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -433,7 +436,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2um-Kg-e6N" id="zNz-hU-umv">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="89.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="PFP-uT-UAB">

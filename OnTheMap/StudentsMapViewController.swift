@@ -14,9 +14,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     // MARK: Properties
     @IBOutlet weak var studentsMapView: MKMapView!
     
-    var positionManager: CLLocationManager!
-    var userPosition: CLLocationCoordinate2D!
-    var updatedUserPosition : Bool = false
     // We will create an MKPointAnnotation for each dictionary in "locations". The
     // point annotations will be stored in this array, and then provided to the map view.
     var annotations = [MKPointAnnotation]()
@@ -30,10 +27,6 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         // Retrive User position
      
         self.studentsMapView.delegate = self
-        self.positionManager = CLLocationManager()
-        positionManager.delegate = self
-        positionManager.desiredAccuracy = kCLLocationAccuracyBest
-        positionManager.requestWhenInUseAuthorization()
         AppTabBarViewController.indicator.startAnimating()
         // Get Students location
         UdacityClient.sharedInstance().getStudentsLocation() { (success, error) in
