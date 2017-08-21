@@ -32,9 +32,9 @@ extension UdacityClient {
         static let Users = "/api/users"
         
         // MARK: Parse Students location
-        static let PostStudentLocation = "/parse/classes/StudentLocation"
+        static let StudentLocation = "/parse/classes/StudentLocation" 
         static let StudentsLocation = "/parse/classes/StudentLocation?limit=100&order=-updatedAt"
-        static let StudentLocation = "/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22"
+        static let StudentLocationWhere = "/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22"
         static let studentLocationEnd = "%22%7D"
     }
     
@@ -43,6 +43,7 @@ extension UdacityClient {
         static let UserName = "username"
         static let Password = "password"
         static let UniqueKey = "uniqueKey"
+        static let objectID = "objectId"
         static let MapString = "mapString"
         
         // MARK: Map
@@ -53,6 +54,7 @@ extension UdacityClient {
         // MARK: Account
         static let LastName = "last_name"
         static let FirtstName = "first_name"
+        
     }
     
     // MARK: JSON Response Keys

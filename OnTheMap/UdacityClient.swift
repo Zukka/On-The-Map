@@ -117,14 +117,75 @@ class UdacityClient: NSObject {
         }
         task.resume()
     }
-        // MARK: DELETE
+    
+    // MARK: PUT
+    func taskForPUTMethod(_ method: String, parameters: [String:AnyObject], jsonBody: String, isUdacityRequest: Bool, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+        /* 1. Set the parameters */
+        var parametersWithApiKey = parameters
+        /* 2/3. Build the URL, Configure the request */
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method, isUdacityRequest: isUdacityRequest))
+        request.httpMethod = "PUT"
+        if !isUdacityRequest {
+            request.addValue(UdacityClient.Parse.AppID, forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue(UdacityClient.Parse.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        }
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+        
+        /* 4. Make the request */
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            func sendError(_ error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandlerForPUT(nil, NSError(domain: "taskForPUTMethod", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(error!)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            /* Remove range characters if isUdacityRequest is true */
+            /* 5/6. Parse the data and use the data (happens in completion handler) */
+            if isUdacityRequest {
+                let range = Range(5..<data.count)
+                let newData = data.subdata(in: range) /* subset response data! */
+                self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPUT)
+            } else {
+                self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPUT)
+            }
+        }
+        
+        /* 7. Start the request */
+        task.resume()
+        
+        return task
+
+ 
+    }
+    
+    // MARK: DELETE
     
     func taskForDELETEMethod(_ method: String, parameters: [String:AnyObject], isUdacityRequest: Bool, completionHandleforDELETE: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         /* 1. Set the parameters */
         var parametersWithApiKey = parameters
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method))
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method, isUdacityRequest: isUdacityRequest))
         request.httpMethod = "DELETE"
         var xsrfCookie: HTTPCookie? = nil
         let sharedCookieStorage = HTTPCookieStorage.shared
@@ -189,10 +250,14 @@ class UdacityClient: NSObject {
         var parametersWithApiKey = parameters
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method))
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method, isUdacityRequest: isUdacityRequest))
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        if !isUdacityRequest {
+            request.addValue(UdacityClient.Parse.AppID, forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue(UdacityClient.Parse.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        }
         request.httpBody = jsonBody.data(using: String.Encoding.utf8)
         
         /* 4. Make the request */
@@ -240,11 +305,15 @@ class UdacityClient: NSObject {
     }
     
     // create a URL from parameters
-    private func udacityURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
+    private func udacityURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil, isUdacityRequest: Bool) -> URL {
         
         var components = URLComponents()
         components.scheme = UdacityClient.Constants.ApiScheme
-        components.host = UdacityClient.Constants.ApiHost
+        if isUdacityRequest {
+            components.host = UdacityClient.Constants.ApiHost
+        } else {
+            components.host = UdacityClient.Parse.ApiHost
+        }
         components.path = withPathExtension ?? ""
         components.queryItems = [URLQueryItem]()
         
