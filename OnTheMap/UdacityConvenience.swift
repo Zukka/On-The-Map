@@ -11,6 +11,29 @@ import Foundation
 
 extension UdacityClient {
     
+    // MARK: DELETE func
+    
+    func deleteSession(completionHandlerForDELETE: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
+        /* 1. Specify parameters, the API method, and the HTTP body (if POST) */
+        let parameters = [String:AnyObject]()
+        let mutableMethod: String = Methods.Session
+        let isUdacityRequest = true
+       
+        let _ = taskForDELETEMethod(mutableMethod, parameters: parameters, isUdacityRequest: isUdacityRequest) { (result, error) in
+            if error != nil {
+                completionHandlerForDELETE(false, error as NSError?)
+                return
+            }
+            if let statusErrorCode = result?[UdacityClient.JSONResponseKeys.StatusErrorCode] as? Int {
+                let statusErrorDescription = result?[UdacityClient.JSONResponseKeys.StatusErrorMessage] as? String
+                let errorDescription = [NSLocalizedDescriptionKey : "\(String(describing: statusErrorDescription!))"]
+                completionHandlerForDELETE(true, NSError(domain: "deleteSession", code: statusErrorCode, userInfo: errorDescription))
+            } else {
+                completionHandlerForDELETE(true, nil)
+            }
+        }
+    }
+
     // MARK: POST func
     
     func postNewSession( username: String,  password: String, completionHandlerForNewSession: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {

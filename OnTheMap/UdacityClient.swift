@@ -10,7 +10,7 @@ import UIKit
 
 class UdacityClient: NSObject {
     
-    // MARK: User Properties
+    // MARK: User(Student) Properties
     var userID : String? = nil
     var userFirstName : String? = nil
     var userLastName : String? = nil
@@ -117,11 +117,14 @@ class UdacityClient: NSObject {
         }
         task.resume()
     }
+        // MARK: DELETE
     
-    // MARK: DELETE Methods
-    
-    func deleteSession(completionHandlerForDELETE: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
-        let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Constants.ApiHost)\(UdacityClient.Methods.Session)")!)
+    func taskForDELETEMethod(_ method: String, parameters: [String:AnyObject], isUdacityRequest: Bool, completionHandleforDELETE: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+        /* 1. Set the parameters */
+        var parametersWithApiKey = parameters
+        
+        /* 2/3. Build the URL, Configure the request */
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(parametersWithApiKey, withPathExtension: method))
         request.httpMethod = "DELETE"
         var xsrfCookie: HTTPCookie? = nil
         let sharedCookieStorage = HTTPCookieStorage.shared
@@ -131,36 +134,53 @@ class UdacityClient: NSObject {
         if let xsrfCookie = xsrfCookie {
             request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
-        let session = URLSession.shared
-        let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            if error != nil {
-                completionHandlerForDELETE(false, error as NSError?)
-                return
+        
+        /* 4. Make the request */
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            func sendError(_ error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandleforDELETE(nil, NSError(domain: "taskForDELETEMethod", code: 1, userInfo: userInfo))
             }
-            let range = Range(5..<data!.count)
-            let newData = data?.subdata(in: range) /* subset response data! */
-            print(NSString(data: newData!, encoding: String.Encoding.utf8.rawValue)!)
-            // parse the data
-            let parsedResult: [String:AnyObject]!
-            do {
-                parsedResult = try JSONSerialization.jsonObject(with: newData!, options: .allowFragments) as! [String:AnyObject]
-            } catch {
-                let parsedError = [NSLocalizedDescriptionKey : "Could not parse the data as JSON"]
-                completionHandlerForDELETE(true, NSError(domain: "deleteSession", code: 99, userInfo: parsedError))
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(error!)")
                 return
             }
             
-            if let statusErrorCode = parsedResult[UdacityClient.JSONResponseKeys.StatusErrorCode] as? Int {
-                let statusErrorDescription = parsedResult[UdacityClient.JSONResponseKeys.StatusErrorMessage] as? String
-                let errorDescription = [NSLocalizedDescriptionKey : "\(String(describing: statusErrorDescription!))"]
-                completionHandlerForDELETE(true, NSError(domain: "deleteSession", code: statusErrorCode, userInfo: errorDescription))
-            } else {
-                completionHandlerForDELETE(true, nil)
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
             }
-
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            /* Remove range characters if isUdacityRequest is true */
+            /* 5/6. Parse the data and use the data (happens in completion handler) */
+            if isUdacityRequest {
+                let range = Range(5..<data.count)
+                let newData = data.subdata(in: range) /* subset response data! */
+                self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandleforDELETE)
+            } else {
+                self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandleforDELETE)
+            }
         }
+        
+        /* 7. Start the request */
         task.resume()
+        
+        return task
+
     }
+    
+    
     // MARK: POST
     
     func taskForPOSTMethod(_ method: String, parameters: [String:AnyObject], jsonBody: String, isUdacityRequest: Bool, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
