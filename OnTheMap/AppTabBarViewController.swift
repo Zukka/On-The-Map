@@ -45,7 +45,7 @@ class AppTabBarViewController: UITabBarController {
 
     @IBAction func postLocationPressed(_ sender: Any) {
         if UdacityClient.sharedInstance().userLocationShared {
-            showRequestUpdatePosition(message: "User \"\(UdacityClient.sharedInstance().userFullName!)\" has already posted a Student Location. Would you like to overwrite their location?")
+            showRequestUpdatePosition(message: "User \"\(UdacityClient.sharedInstance().userFirstName!) \(UdacityClient.sharedInstance().userLastName!)\" has already posted a Student Location. Would you like to overwrite their location?")
         } else {
             openPostViewController()
         }

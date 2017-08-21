@@ -74,7 +74,15 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             // Update student pin position
         } else {
             // Post a first student pin position
-            
+            UdacityClient.sharedInstance().postStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPostingStudentLocation: { (success, error) in
+                if error != nil {
+                    let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
+                    self.showAlertView(message: messageError)
+                } else {
+                    // Return to previous ViewController (MAP or LIST students PIN)
+                    self.cancelPosting((Any).self)
+                }
+            })
         }
     }
     
@@ -99,8 +107,8 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         
         //  MKCoordinateSpanMake define the extension of the  area to show
         let span = MKCoordinateSpanMake(0.1, 0.1)
-        let region = MKCoordinateRegion(center: coordinates!, span: span)
         
+        let region = MKCoordinateRegion(center: coordinates!, span: span)
         resultMapView.setRegion(region, animated: true)
         
         // Drop a pin at new student position
@@ -110,7 +118,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         resultMapView.addAnnotation(studentAnnotation)
     }
     
-    func showStartLayout( show: Bool) {
+    func showStartLayout(show: Bool) {
         searchView.isHidden = !show
         resultView.isHidden = show
     }

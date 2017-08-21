@@ -89,7 +89,6 @@ private extension LoginViewController {
         }
     }
     
-    
     func showAlertView(message: String) {
         
         self.failLoginAlertView = UIAlertController(title: Constants.appName,
