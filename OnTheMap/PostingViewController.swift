@@ -56,13 +56,33 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     @IBAction func submitPressed(_ sender: Any) {
         
+        // Check if is a valid link
+        let startLinkChars = "https://"
+        guard startLinkChars.characters.contains(textFieldLink.text!.lowercased().characters.first!) else {
+            showAlertView(message: LinkErrors.startLink)
+            return
+        }
+        
+        let isValidlink = NSURL(string: textFieldLink.text!)
+        guard isValidlink != nil else {
+            showAlertView(message: LinkErrors.brokedLink)
+            return
+        }
+        
+        // Call correct func for update or add a new Student pin position
+        if UdacityClient.sharedInstance().userLocationShared {
+            // Update student pin position
+        } else {
+            // Post a first student pin position
+            
+        }
     }
     
     func geocodeStringAddress(address: String) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address) { (placemark, error) in
             if error != nil {
-                let messageError =  "Error: \(String(describing: error?.localizedDescription))"
+                let messageError =  "Error: \(String(describing: error!.localizedDescription))"
                 self.showAlertView(message: messageError)
             } else if placemark!.count > 0 {
                 let placemark = placemark![0]

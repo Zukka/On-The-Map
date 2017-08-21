@@ -21,6 +21,7 @@ struct LoginErrors {
 
 // MARK: StudentMapViewController
 struct LinkErrors {
+    static let startLink = "Link must start with https://"
     static let brokedLink = "Link is not valid!"
     static let linkEmpty = "Link is empty!"
 }
