@@ -26,7 +26,9 @@ class UdacityClient: NSObject {
         super.init()
     }
     
-    // MARK: GET Methods
+    
+    // MARK: GET func
+    
     func getStudentHaveSharedLocation(completionHandlerForGetUserLocation: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
         let request = NSMutableURLRequest(url: URL(string: "\(UdacityClient.Constants.ApiScheme)://\(UdacityClient.Parse.ApiHost)\(UdacityClient.Methods.StudentLocation)\(self.userID!)\(UdacityClient.Methods.studentLocationEnd)")!)
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
@@ -48,14 +50,14 @@ class UdacityClient: NSObject {
                 return
             }
             if let parsedLocation = parsedResult["results"] as? [[String:AnyObject]] {
-               // Check if user have shared a location and set var userLocationShared
+                // Check if user have shared a location and set var userLocationShared
+                print(parsedLocation)
                 for items in parsedLocation {
-                     self.userLocationShared = !items.keys.isEmpty
-                    
+                    self.userLocationShared = !items.keys.isEmpty
                 }
                 completionHandlerForGetUserLocation(self.userLocationShared, nil)
             }
-                       
+            
         }
         task.resume()
     }
@@ -82,10 +84,10 @@ class UdacityClient: NSObject {
             if let parsedUser = parsedResult[UdacityClient.JSONResponseKeys.User] as? [String:AnyObject] {
                 let firstName = parsedUser[UdacityClient.ParameterKeys.FirtstName] as! String
                 let lastName = parsedUser[UdacityClient.ParameterKeys.LastName] as! String
-
+                
                 completionHandlerForGetUSerData(firstName, lastName, nil)
             }
-                        
+            
         }
         task.resume()
     }
@@ -117,6 +119,8 @@ class UdacityClient: NSObject {
         }
         task.resume()
     }
+    
+
     
     // MARK: PUT
     func taskForPUTMethod(_ method: String, parameters: [String:AnyObject], jsonBody: String, isUdacityRequest: Bool, completionHandlerForPUT: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {

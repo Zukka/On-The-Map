@@ -10,8 +10,7 @@ import UIKit
 import Foundation
 
 extension UdacityClient {
-    
-    // MARK: PUT func
+        // MARK: PUT func
     func putStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForPutStudentLocation: @escaping (_ result: Bool?, _ error: NSError?) -> Void)  {
         /* 1. Specify parameters, the API method, and the HTTP body (if POST) */
         let parameters = [UdacityClient.ParameterKeys.objectID: self.userObjectId]
