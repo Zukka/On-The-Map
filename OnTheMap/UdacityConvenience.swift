@@ -176,9 +176,7 @@ extension UdacityClient {
             
         let mutableMethod: String = Methods.StudentLocation
         let isUdacityRequest = false
-        let jsonBody = "{\(ParameterKeys.UniqueKey): \(self.userID!), \(ParameterKeys.FirtstName): \(self.userFirstName!), \(ParameterKeys.LastName): \(self.userLastName!),\(ParameterKeys.MapString): \(mapString), \(ParameterKeys.MediaURL): \(mediaURL),\(ParameterKeys.Latitude): \(latitude), \(ParameterKeys.Longitude): \(longitude)}"
-        
-        // CORRETTO: let jsonBody = "{\"\(ParameterKeys.UniqueKey)\": \"\(self.userID!)\", \"\(ParameterKeys.FirtstName)\": \"\(self.userFirstName!)\", \"\(ParameterKeys.LastName)\": \"\(self.userLastName!)\",\"\(ParameterKeys.MapString)\": \"\(mapString)\", \"\(ParameterKeys.MediaURL)\": \"\(mediaURL)\",\"\(ParameterKeys.Latitude)\": \"\(latitude)\", \"\(ParameterKeys.Longitude)\": \"\(longitude)\"}"
+        let jsonBody = "{\"\(ParameterKeys.UniqueKey)\": \"\(self.userID!)\", \"\(ParameterKeys.FirtstName)\": \"\(self.userFirstName!)\", \"\(ParameterKeys.LastName)\": \"\(self.userLastName!)\",\"\(ParameterKeys.MapString)\": \"\(mapString)\", \"\(ParameterKeys.MediaURL)\": \"\(mediaURL)\",\"\(ParameterKeys.Latitude)\": \(latitude), \"\(ParameterKeys.Longitude)\": \(longitude)}"
         print(jsonBody)
         let _ = taskForPOSTMethod(mutableMethod, parameters: parameters as [String:AnyObject], jsonBody: jsonBody, isUdacityRequest: isUdacityRequest) { (results, error) in
             if let error = error {
