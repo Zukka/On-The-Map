@@ -86,9 +86,11 @@ class StudentsTableViewController: UITableViewController {
     
     // MARK: - Navigation
     
-    // Prepare and open MemeDetailViewController when tap on item list
+    // Prepare and open Link in app when tap on item list
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedMediaURL = appDelegate.udacityStudents[indexPath.item].mediaURL
+        // Deselect row for doesn't remain in the "Selected State" after returning to the app from the browser
+        tableView.deselectRow(at: indexPath, animated: true)
         // Call func for check the link and open it (if is ok)
         openMediaURL(urlString: selectedMediaURL!)
     }
