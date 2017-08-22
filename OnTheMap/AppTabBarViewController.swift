@@ -92,7 +92,7 @@ class AppTabBarViewController: UITabBarController {
     }
 }
 
-// MARK: - LoginViewController Alerts
+// MARK: - AppTabBarViewController Alerts
 
 private extension AppTabBarViewController {
     

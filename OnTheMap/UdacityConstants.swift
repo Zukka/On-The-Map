@@ -14,6 +14,8 @@ extension UdacityClient {
     struct Constants {
         static let ApiScheme = "https"
         static let ApiHost = "www.udacity.com"
+        static let LimitLocation = "100"
+        static let OrderLocation = "-updatedAt"
     }
     
     // MARK : Parse
@@ -32,10 +34,8 @@ extension UdacityClient {
         static let Users = "/api/users"
         
         // MARK: Parse Students location
-        static let StudentLocation = "/parse/classes/StudentLocation" 
-        static let StudentsLocation = "/parse/classes/StudentLocation?limit=100&order=-updatedAt"
-        static let StudentLocationWhere = "/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22"
-        static let studentLocationEnd = "%22%7D"
+        static let StudentLocation = "/parse/classes/StudentLocation"
+        static let StudentLocationWhere = "?where=%7B%22uniqueKey%22%3A%22uniqueKeyValue%22%7D"
     }
     
     // MARK: Parameter Keys
@@ -43,8 +43,11 @@ extension UdacityClient {
         static let UserName = "username"
         static let Password = "password"
         static let UniqueKey = "uniqueKey"
+        static let UniqueKeyValue = "uniqueKeyValue"
         static let objectID = "objectId"
         static let MapString = "mapString"
+        static let LastName = "lastName"
+        static let FirtstName = "firstName"
         
         // MARK: Map
         static let Latitude = "latitude"
@@ -52,9 +55,12 @@ extension UdacityClient {
         static let MediaURL = "mediaURL"
         
         // MARK: Account
-        static let LastName = "last_name"
-        static let FirtstName = "first_name"
+        static let Last_Name = "last_name"
+        static let Firtst_Name = "first_name"
         
+        // MARK: Students Location
+        static let Limit = "limit"
+        static let Order = "order"
     }
     
     // MARK: JSON Response Keys

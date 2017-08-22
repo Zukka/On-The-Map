@@ -138,7 +138,11 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         let appDelegate = object as! AppDelegate
         self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
     }
+}
 
+// MARK: - StudentsMapViewController Alerts
+
+private extension StudentsMapViewController {
     func showAlertView(message: String) {
         
         self.mapAlertView = UIAlertController(title: Constants.appName,

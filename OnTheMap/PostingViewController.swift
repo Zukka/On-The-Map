@@ -73,24 +73,32 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         if UdacityClient.sharedInstance().userLocationShared {
             // Update student pin position
             UdacityClient.sharedInstance().putStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPutStudentLocation: { (success, error) in
-                if error != nil {
-                    let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
-                    self.showAlertView(message: messageError)
-                } else {
-                    // Return to previous ViewController (MAP or LIST students PIN)
-                    self.cancelPosting((Any).self)
+                performUIUpdatesOnMain {
+                    
+                    if error != nil {
+                        let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
+                        self.showAlertView(message: messageError)
+                        print(messageError)
+                        
+                    } else {
+                        // Return to previous ViewController (MAP or LIST students PIN)
+                        self.cancelPosting((Any).self)
+                    }
                 }
             })
-
+            
         } else {
             // Post a first student pin position
             UdacityClient.sharedInstance().postStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPostingStudentLocation: { (success, error) in
-                if error != nil {
-                    let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
-                    self.showAlertView(message: messageError)
-                } else {
-                    // Return to previous ViewController (MAP or LIST students PIN)
-                    self.cancelPosting((Any).self)
+                performUIUpdatesOnMain {
+                    if error != nil {
+                        let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
+                        self.showAlertView(message: messageError)
+                        print(messageError)
+                    } else {
+                        // Return to previous ViewController (MAP or LIST students PIN)
+                        self.cancelPosting((Any).self)
+                    }
                 }
             })
         }
@@ -133,11 +141,15 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         resultView.isHidden = show
     }
     
+}
+
+// MARK: - PostingViewController Alerts
     
+private extension PostingViewController {
     
     func showAlertView(message: String) {
         
-        geocodeFailAlertView = UIAlertController(title: Constants.appName,
+        self.geocodeFailAlertView = UIAlertController(title: Constants.appName,
                                                     message: message,
                                                     preferredStyle: .alert)
         // Add action for close alert view

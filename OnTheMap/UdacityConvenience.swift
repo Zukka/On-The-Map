@@ -10,7 +10,80 @@ import UIKit
 import Foundation
 
 extension UdacityClient {
-        // MARK: PUT func
+    
+    // MARK: GET func
+    
+    func getPublicUserData(completionHandlerForGetUSerData: @escaping (_ userFirstName: String?, _ userLastName: String?, _ error: NSError?) -> Void) {
+        /* 1. Specify parameters, the API method, and the HTTP body (if POST) */
+        let parameters = [String:AnyObject]()
+        let mutableMethod: String = "\(Methods.Users)/\(self.userID!)"
+        let isUdacityRequest = true
+        
+        let _ = taskForGETMethod(mutableMethod, parameters: parameters, isUdacityRequest: isUdacityRequest) { (results, error) in
+            if error != nil {
+                completionHandlerForGetUSerData(nil, nil, error as NSError?)
+                return
+            }
+            if let parsedUser = results?[UdacityClient.JSONResponseKeys.User] as? [String:AnyObject] {
+                let firstName = parsedUser[UdacityClient.ParameterKeys.Firtst_Name] as! String
+                let lastName = parsedUser[UdacityClient.ParameterKeys.Last_Name] as! String
+                print(firstName + lastName)
+                completionHandlerForGetUSerData(firstName, lastName, nil)
+            }
+        }
+    }
+
+    func getStudentsLocation(completionHandlerGETStudendsLocation: @escaping (_ result: Bool?, _ error: NSError?) -> Void) {
+        /* 1. Specify parameters, the API method, and the HTTP body (if POST) */
+        let parameters = [
+            UdacityClient.ParameterKeys.Limit: UdacityClient.Constants.LimitLocation,
+            UdacityClient.ParameterKeys.Order: UdacityClient.Constants.OrderLocation
+        ]
+        let mutableMethod: String = Methods.StudentLocation
+        let isUdacityRequest = false
+
+        let _ = taskForGETMethod(mutableMethod, parameters: parameters as [String : AnyObject], isUdacityRequest: isUdacityRequest) { (result, error) in
+            if error != nil {
+                completionHandlerGETStudendsLocation(false, error as NSError?)
+                return
+            }
+            if let parsedUser = result?["results"] as? [[String: AnyObject]] {
+                UdacityStudent.studentsFromResults(parsedUser)
+                completionHandlerGETStudendsLocation(true, nil)
+            }
+        }
+    }
+    
+    func getStudentHaveSharedLocation(completionHandlerForGetUserLocation: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        /* 1. Specify parameters, the API method, and the HTTP body (if POST) */
+        let parameters = [String:AnyObject]()
+        var mutableMethod: String = Methods.StudentLocation + Methods.StudentLocationWhere
+        mutableMethod = substituteKeyInMethod(mutableMethod, key: UdacityClient.ParameterKeys.UniqueKeyValue, value: self.userID!)!
+        let isUdacityRequest = false
+        let _ = taskForGETMethod(mutableMethod, parameters: parameters as [String : AnyObject], isUdacityRequest: isUdacityRequest) { (result, error) in
+            if error != nil {
+                completionHandlerForGetUserLocation(false, error as NSError?)
+                return
+            } else {
+                if let parsedUser = result?["results"] as? [[String: AnyObject]] {
+
+                    if parsedUser.count == 0 {
+                        self.userLocationShared = false
+                    } else {
+                        self.userLocationShared = true
+                        for items in parsedUser {
+                            self.userLocationShared = !items.keys.isEmpty
+                        }
+                    }
+                    
+                    completionHandlerForGetUserLocation(self.userLocationShared, nil)
+                }
+            }
+           
+        }
+    }
+    
+    // MARK: PUT func
     func putStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForPutStudentLocation: @escaping (_ result: Bool?, _ error: NSError?) -> Void)  {
         /* 1. Specify parameters, the API method, and the HTTP body (if POST) */
         let parameters = [UdacityClient.ParameterKeys.objectID: self.userObjectId]
@@ -104,6 +177,9 @@ extension UdacityClient {
         let mutableMethod: String = Methods.StudentLocation
         let isUdacityRequest = false
         let jsonBody = "{\(ParameterKeys.UniqueKey): \(self.userID!), \(ParameterKeys.FirtstName): \(self.userFirstName!), \(ParameterKeys.LastName): \(self.userLastName!),\(ParameterKeys.MapString): \(mapString), \(ParameterKeys.MediaURL): \(mediaURL),\(ParameterKeys.Latitude): \(latitude), \(ParameterKeys.Longitude): \(longitude)}"
+        
+        // CORRETTO: let jsonBody = "{\"\(ParameterKeys.UniqueKey)\": \"\(self.userID!)\", \"\(ParameterKeys.FirtstName)\": \"\(self.userFirstName!)\", \"\(ParameterKeys.LastName)\": \"\(self.userLastName!)\",\"\(ParameterKeys.MapString)\": \"\(mapString)\", \"\(ParameterKeys.MediaURL)\": \"\(mediaURL)\",\"\(ParameterKeys.Latitude)\": \"\(latitude)\", \"\(ParameterKeys.Longitude)\": \"\(longitude)\"}"
+        print(jsonBody)
         let _ = taskForPOSTMethod(mutableMethod, parameters: parameters as [String:AnyObject], jsonBody: jsonBody, isUdacityRequest: isUdacityRequest) { (results, error) in
             if let error = error {
                 completionHandlerForPostingStudentLocation(nil, error)
