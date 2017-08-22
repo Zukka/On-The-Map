@@ -23,6 +23,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var textFieldLink: UITextField!
     @IBOutlet weak var resultMapView: MKMapView!
+    @IBOutlet weak var geocodingActivityIndicator: UIActivityIndicatorView!
     
     // MARK: Var
     var geocodeFailAlertView: UIAlertController?
@@ -113,15 +114,19 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     func geocodeStringAddress(address: String) {
         let geoCoder = CLGeocoder()
+        startActivityIndicator()
         geoCoder.geocodeAddressString(address) { (placemark, error) in
-            if error != nil {
-                let messageError =  "Error: \(String(describing: error!.localizedDescription))"
-                self.showAlertView(message: messageError)
-            } else if placemark!.count > 0 {
-                let placemark = placemark![0]
-                let location = placemark.location
-                self.coordinates = location!.coordinate
-                self.showMap()
+            performUIUpdatesOnMain {
+                self.stopActivityIndicator()
+                if error != nil {
+                    let messageError =  "Error: \(String(describing: error!.localizedDescription))"
+                    self.showAlertView(message: messageError)
+                } else if placemark!.count > 0 {
+                    let placemark = placemark![0]
+                    let location = placemark.location
+                    self.coordinates = location!.coordinate
+                    self.showMap()
+                }
             }
         }
     }
@@ -148,6 +153,18 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         resultView.isHidden = show
     }
     
+    // MARK : Activity Indicator
+    
+    func startActivityIndicator() {
+        geocodingActivityIndicator.isHidden = false
+        geocodingActivityIndicator.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        geocodingActivityIndicator.isHidden = true
+        geocodingActivityIndicator.stopAnimating()
+    }
+
 }
 
 // MARK: - PostingViewController Alerts

@@ -325,9 +325,12 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9zM-oE-KX1">
                                 <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <subviews>
-                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dHn-o3-lme">
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHn-o3-lme">
                                         <rect key="frame" x="0.0" y="123.33333333333331" width="414" height="548.66666666666674"/>
                                     </mapView>
+                                    <activityIndicatorView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fk0-WB-70w">
+                                        <rect key="frame" x="197" y="326" width="20" height="20"/>
+                                    </activityIndicatorView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MWH-QL-ocT">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="147.33333333333334"/>
                                         <subviews>
@@ -369,10 +372,12 @@
                                 <color key="backgroundColor" red="0.3694705069" green="0.52688968179999995" blue="0.68635708090000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="dHn-o3-lme" secondAttribute="bottom" id="DrO-RX-0bb"/>
+                                    <constraint firstItem="fk0-WB-70w" firstAttribute="centerY" secondItem="9zM-oE-KX1" secondAttribute="centerY" id="GND-Sd-c5x"/>
                                     <constraint firstAttribute="trailing" secondItem="MWH-QL-ocT" secondAttribute="trailing" id="I44-tJ-PXY"/>
                                     <constraint firstItem="MWH-QL-ocT" firstAttribute="top" secondItem="9zM-oE-KX1" secondAttribute="top" id="KrI-JE-YmW"/>
                                     <constraint firstItem="3WL-eu-ft1" firstAttribute="leading" secondItem="9zM-oE-KX1" secondAttribute="leading" id="OUd-fL-fcu"/>
                                     <constraint firstItem="dHn-o3-lme" firstAttribute="leading" secondItem="9zM-oE-KX1" secondAttribute="leading" id="Oxl-4M-hlU"/>
+                                    <constraint firstItem="fk0-WB-70w" firstAttribute="centerX" secondItem="9zM-oE-KX1" secondAttribute="centerX" id="YG7-DW-hfQ"/>
                                     <constraint firstItem="MWH-QL-ocT" firstAttribute="leading" secondItem="9zM-oE-KX1" secondAttribute="leading" id="ch9-LW-ZpT"/>
                                     <constraint firstAttribute="bottom" secondItem="3WL-eu-ft1" secondAttribute="bottom" id="d7K-hI-2PH"/>
                                     <constraint firstAttribute="trailing" secondItem="3WL-eu-ft1" secondAttribute="trailing" id="msn-DI-0VD"/>
@@ -410,6 +415,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="geocodingActivityIndicator" destination="fk0-WB-70w" id="Eff-7R-YFU"/>
                         <outlet property="resultMapView" destination="dHn-o3-lme" id="L6Q-rY-Haj"/>
                         <outlet property="resultView" destination="9zM-oE-KX1" id="gF1-kp-PNW"/>
                         <outlet property="searchButton" destination="01p-GM-65S" id="bfX-r1-qOX"/>
