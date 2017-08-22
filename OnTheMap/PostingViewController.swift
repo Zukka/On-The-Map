@@ -25,10 +25,12 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     @IBOutlet weak var resultMapView: MKMapView!
     
     // MARK: Var
-    
     var geocodeFailAlertView: UIAlertController?
     var coordinates: CLLocationCoordinate2D?
     var studentPosition: CLLocationCoordinate2D!
+    
+    // MARK: Constants
+    let textfieldDelegate = CustomTextFieldDelegate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +38,15 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         searchButton.addCorner(value: 10)
         submitButton.addCorner(value: 10)
         
+        prepareTextField(textField: textFieldPlace)
+        prepareTextField(textField: textFieldLink)
+
         showStartLayout(show: true)
+    }
+    
+    // MARK : TextField funcs
+    func prepareTextField(textField: UITextField) {
+        textField.delegate = textfieldDelegate
     }
 
     // MARK: @IBAction

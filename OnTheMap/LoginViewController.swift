@@ -20,9 +20,19 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var loginActivityIndicator: UIActivityIndicatorView!
     
+    // MARK: Constants
+    let textfieldDelegate = CustomTextFieldDelegate()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        prepareTextField(textField: textFieldEmail)
+        prepareTextField(textField: textFieldPassword)
+    }
+
+    // MARK : TextField funcs
+    func prepareTextField(textField: UITextField) {
+        textField.delegate = textfieldDelegate
     }
 
     // MARK: @IBAction

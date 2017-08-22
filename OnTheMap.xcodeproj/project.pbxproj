@@ -17,6 +17,7 @@
 		B66EA1761F3F475A00AF630E /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA1751F3F475A00AF630E /* UdacityConstants.swift */; };
 		B66EA17C1F3F52AA00AF630E /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA17B1F3F52AA00AF630E /* GCDBlackBox.swift */; };
 		B67E07B41F4ACCCD00CB0340 /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07B31F4ACCCD00CB0340 /* UdacityConvenience.swift */; };
+		B67E07D41F4C799B00CB0340 /* CustomTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07D31F4C799B00CB0340 /* CustomTextFieldDelegate.swift */; };
 		B6C6CD861F44373A00A1075A /* StudentsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD851F44373A00A1075A /* StudentsMapViewController.swift */; };
 		B6C6CD881F443D0B00A1075A /* AppTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD871F443D0B00A1075A /* AppTabBarViewController.swift */; };
 		B6C6CD8E1F45DFE000A1075A /* StudentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6CD8D1F45DFE000A1075A /* StudentsTableViewController.swift */; };
@@ -38,6 +39,7 @@
 		B66EA1751F3F475A00AF630E /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		B66EA17B1F3F52AA00AF630E /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		B67E07B31F4ACCCD00CB0340 /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
+		B67E07D31F4C799B00CB0340 /* CustomTextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextFieldDelegate.swift; sourceTree = "<group>"; };
 		B6C6CD851F44373A00A1075A /* StudentsMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentsMapViewController.swift; sourceTree = "<group>"; };
 		B6C6CD871F443D0B00A1075A /* AppTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabBarViewController.swift; sourceTree = "<group>"; };
 		B6C6CD8D1F45DFE000A1075A /* StudentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentsTableViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				B66EA16C1F3F3C5500AF630E /* Model */,
 				B66EA1571F3F019900AF630E /* AppDelegate.swift */,
+				B67E07D31F4C799B00CB0340 /* CustomTextFieldDelegate.swift */,
 				B66EA17B1F3F52AA00AF630E /* GCDBlackBox.swift */,
 				B66EA1711F3F3D8D00AF630E /* Errors.swift */,
 				B6C6CD8F1F45E54900A1075A /* Cells */,
@@ -234,6 +237,7 @@
 				B66EA1581F3F019900AF630E /* AppDelegate.swift in Sources */,
 				B6C6CD881F443D0B00A1075A /* AppTabBarViewController.swift in Sources */,
 				B67E07B41F4ACCCD00CB0340 /* UdacityConvenience.swift in Sources */,
+				B67E07D41F4C799B00CB0340 /* CustomTextFieldDelegate.swift in Sources */,
 				B66EA1701F3F3C9E00AF630E /* UdacityClient.swift in Sources */,
 				B6C6CD8E1F45DFE000A1075A /* StudentsTableViewController.swift in Sources */,
 				B66EA17C1F3F52AA00AF630E /* GCDBlackBox.swift in Sources */,
