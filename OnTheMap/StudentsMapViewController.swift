@@ -51,6 +51,8 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         let appDelegate = object as! AppDelegate
 
         if appDelegate.udacityStudents.count > 0 {
+            // Remove older mapview annotations from the map
+            studentsMapView.removeAnnotations(studentsMapView.annotations)
             self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
         }
     }
