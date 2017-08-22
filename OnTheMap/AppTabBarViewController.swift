@@ -52,7 +52,6 @@ class AppTabBarViewController: UITabBarController {
     }
     
     @IBAction func refreshPressed(_ sender: Any) {
-        print("Refresh Pressed")
         AppTabBarViewController.indicator.startAnimating()
         UdacityClient.sharedInstance().getStudentsLocation() { (success, error) in
             performUIUpdatesOnMain {

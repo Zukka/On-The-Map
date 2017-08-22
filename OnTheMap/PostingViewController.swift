@@ -48,7 +48,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
  
     @IBAction func searchPressed(_ sender: Any) {
         guard textFieldPlace.text != "" else {
-            print ("place field is empty.")
+            showAlertView(message: "Place field is empty.")
             return
         }
         geocodeStringAddress(address: textFieldPlace.text!)
@@ -78,8 +78,6 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                     if error != nil {
                         let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
                         self.showAlertView(message: messageError)
-                        print(messageError)
-                        
                     } else {
                         // Return to previous ViewController (MAP or LIST students PIN)
                         self.cancelPosting((Any).self)
@@ -94,7 +92,6 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                     if error != nil {
                         let messageError =  "Error: \(String(describing: error!.code)) - \(String(describing: error!.localizedDescription))"
                         self.showAlertView(message: messageError)
-                        print(messageError)
                     } else {
                         // Return to previous ViewController (MAP or LIST students PIN)
                         self.cancelPosting((Any).self)
