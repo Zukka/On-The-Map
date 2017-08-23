@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct UdacityStudent {
+/*struct UdacityStudent {
     
     // MARK: Properties
     
@@ -44,5 +44,37 @@ struct UdacityStudent {
         }
     }
 
+}
+*/
+
+struct UdacityStudent {
+    
+    // MARK: Properties
+    
+    var latitude: Double
+    var longitude: Double
+    var firstName: String
+    var lastName: String
+    var mediaURL: String
+    
+    // MARK: Initializers
+    
+    // construct a UdacityStudent from a dictionary
+    init (firstName: String, lastName: String, mediaURL: String, latitude: Double, longitude: Double) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.mediaURL = mediaURL
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
+}
+
+class Students {
+    
+    static let sharedStudents = Students()
+    
+    var members:[UdacityStudent] = []
+    
 }
 

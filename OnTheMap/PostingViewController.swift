@@ -83,6 +83,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         // Call correct func for update or add a new Student pin position
         if UdacityClient.sharedInstance().userLocationShared {
             // Update student pin position
+            print("UPDATE")
             UdacityClient.sharedInstance().putStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPutStudentLocation: { (success, error) in
                 performUIUpdatesOnMain {
                     
@@ -98,6 +99,8 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             
         } else {
             // Post a first student pin position
+            print("NEW POST")
+
             UdacityClient.sharedInstance().postStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPostingStudentLocation: { (success, error) in
                 performUIUpdatesOnMain {
                     if error != nil {

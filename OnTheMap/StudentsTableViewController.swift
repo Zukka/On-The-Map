@@ -35,14 +35,14 @@ class StudentsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appDelegate.udacityStudents.count
+        return Students.sharedStudents.members.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "studentPinCell", for: indexPath) as! StudentTableViewCell
         
         // Configure the cell
-        let student = appDelegate.udacityStudents[indexPath.item]
+        let student = Students.sharedStudents.members[indexPath.item]
         cell.studentFullName.text! = student.firstName + " " + student.lastName
         cell.studentURL.text! = student.mediaURL
         
@@ -88,7 +88,7 @@ class StudentsTableViewController: UITableViewController {
     
     // Prepare and open Link in app when tap on item list
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedMediaURL = appDelegate.udacityStudents[indexPath.item].mediaURL
+        selectedMediaURL = Students.sharedStudents.members[indexPath.item].mediaURL
         // Deselect row for doesn't remain in the "Selected State" after returning to the app from the browser
         tableView.deselectRow(at: indexPath, animated: true)
         // Call func for check the link and open it (if is ok)

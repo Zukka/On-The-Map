@@ -37,9 +37,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
                     let messageError =  "Error: \(String(describing: error.code)) - \(String(describing: error.localizedDescription))"
                     self.showAlertView(message: messageError)
                 } else {
-                    let object = UIApplication.shared.delegate
-                    let appDelegate = object as! AppDelegate
-                    self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
+                    self.addStudentsPinToMap(locations: Students.sharedStudents.members)
                 }
             }
 
@@ -47,13 +45,10 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        let object = UIApplication.shared.delegate
-        let appDelegate = object as! AppDelegate
-
-        if appDelegate.udacityStudents.count > 0 {
+            if Students.sharedStudents.members.count > 0 {
             // Remove older mapview annotations from the map
             studentsMapView.removeAnnotations(studentsMapView.annotations)
-            self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
+            self.addStudentsPinToMap(locations: Students.sharedStudents.members)
         }
     }
     
@@ -136,9 +131,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     
     
     func reloadDataMap(){
-        let object = UIApplication.shared.delegate
-        let appDelegate = object as! AppDelegate
-        self.addStudentsPinToMap(locations: appDelegate.udacityStudents)
+        self.addStudentsPinToMap(locations: Students.sharedStudents.members)
     }
 }
 

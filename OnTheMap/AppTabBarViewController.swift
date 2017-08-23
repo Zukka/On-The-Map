@@ -42,13 +42,18 @@ class AppTabBarViewController: UITabBarController {
             }
         })
      }
-
+    
     @IBAction func postLocationPressed(_ sender: Any) {
-        if UdacityClient.sharedInstance().userLocationShared {
-            showRequestUpdatePosition(message: "User \"\(UdacityClient.sharedInstance().userFirstName!) \(UdacityClient.sharedInstance().userLastName!)\" has already posted a Student Location. Would you like to overwrite their location?")
-        } else {
-            openPostViewController()
-        }
+        UdacityClient.sharedInstance().getStudentHaveSharedLocation(completionHandlerForGetUserLocation: { (success, error) in
+            performUIUpdatesOnMain {
+                
+                if UdacityClient.sharedInstance().userLocationShared {
+                    self.showRequestUpdatePosition(message: "User \"\(UdacityClient.sharedInstance().userFirstName!) \(UdacityClient.sharedInstance().userLastName!)\" has already posted a Student Location. Would you like to overwrite their location?")
+                } else {
+                    self.openPostViewController()
+                }
+            }
+        })
     }
     
     @IBAction func refreshPressed(_ sender: Any) {
