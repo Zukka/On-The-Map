@@ -50,13 +50,8 @@ extension UdacityClient {
                 let studentsSingleton = Students.sharedStudents
                 studentsSingleton.members.removeAll()
                 for result in parsedUser {
-                    let lastName = result[UdacityClient.JSONResponseKeys.LastName] as? String ?? ""
-                    let firstName = result[UdacityClient.JSONResponseKeys.FirstName] as? String ?? ""
-                    let mediaURL = result[UdacityClient.JSONResponseKeys.MediaURL] as? String ?? ""
-                    let latitude = result[UdacityClient.JSONResponseKeys.Latitude] as? Double ?? -999999
-                    let longitude = result[UdacityClient.JSONResponseKeys.Longitude] as? Double ?? -999999
-
-                    studentsSingleton.members.append(UdacityStudent(firstName: firstName, lastName: lastName, mediaURL: mediaURL, latitude: latitude, longitude: longitude))
+                    // Append a student 
+                    studentsSingleton.members.append(UdacityStudent(dictionary: result))
                     
                 }
                 completionHandlerGETStudendsLocation(true, nil)
@@ -76,7 +71,6 @@ extension UdacityClient {
                 return
             } else {
                 if let parsedUser = result?["results"] as? [[String: AnyObject]] {
-                    print(parsedUser)
                     if parsedUser.count == 0 {
                         self.userLocationShared = false
                     } else {

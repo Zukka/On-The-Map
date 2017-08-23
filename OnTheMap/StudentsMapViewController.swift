@@ -95,10 +95,13 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     // MARK: func
     func addStudentsPinToMap(locations: [UdacityStudent])  {
         
+        // Remove older mapview annotations from the map
+        studentsMapView.removeAnnotations(studentsMapView.annotations)
+        annotations.removeAll()
+
         // The "locations" array is loaded with the sample data below. We are using the dictionaries
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
-        annotations.removeAll()
         for dictionary in locations {
             // Check if latitude and longitude have a value for prevent an error
             if dictionary.latitude != -999999 && dictionary.longitude != -999999 {

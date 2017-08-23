@@ -83,7 +83,6 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         // Call correct func for update or add a new Student pin position
         if UdacityClient.sharedInstance().userLocationShared {
             // Update student pin position
-            print("UPDATE")
             UdacityClient.sharedInstance().putStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPutStudentLocation: { (success, error) in
                 performUIUpdatesOnMain {
                     
@@ -99,8 +98,6 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             
         } else {
             // Post a first student pin position
-            print("NEW POST")
-
             UdacityClient.sharedInstance().postStudentLocation(mapString: textFieldPlace.text!, mediaURL: textFieldLink.text!, latitude: (coordinates?.latitude)!, longitude: (coordinates?.longitude)!, completionHandlerForPostingStudentLocation: { (success, error) in
                 performUIUpdatesOnMain {
                     if error != nil {
@@ -117,11 +114,13 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     func geocodeStringAddress(address: String) {
         let geoCoder = CLGeocoder()
-        startActivityIndicator()
         geoCoder.geocodeAddressString(address) { (placemark, error) in
+        // Start Activity Indicator
+        self.startActivityIndicator()
             performUIUpdatesOnMain {
-                self.stopActivityIndicator()
                 if error != nil {
+                    // Stop Activity Indicator
+                    self.stopActivityIndicator()
                     let messageError =  "Error: \(String(describing: error!.localizedDescription))"
                     self.showAlertView(message: messageError)
                 } else if placemark!.count > 0 {
@@ -149,6 +148,8 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         studentAnnotation.coordinate = coordinates!
         studentAnnotation.title = "Current location"
         resultMapView.addAnnotation(studentAnnotation)
+        // Stop Activity Indicator
+        self.stopActivityIndicator()
     }
     
     func showStartLayout(show: Bool) {
