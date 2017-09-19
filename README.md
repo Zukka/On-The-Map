@@ -1,5 +1,8 @@
 # On-The-Map
 
+App to show information posted from others Udacity students on a map.
+The map contain pins that show the students locations, by tapping on the pin user can see the URL.
+User will be able to add their data by posting a string location, app geocoded the address, and a URL.
 
 ## Requirements
 
