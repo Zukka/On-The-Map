@@ -133,7 +133,7 @@ class StudentsMapViewController: UIViewController, MKMapViewDelegate, CLLocation
     }
     
     
-    func reloadDataMap(){
+    @objc func reloadDataMap(){
         self.addStudentsPinToMap(locations: Students.sharedStudents.members)
     }
 }

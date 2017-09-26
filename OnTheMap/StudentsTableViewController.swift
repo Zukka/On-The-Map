@@ -51,7 +51,7 @@ class StudentsTableViewController: UITableViewController {
 
     // MARK: func
     
-    func reloadDataList(){
+    @objc func reloadDataList(){
         self.tableView.reloadData()
     }
     
