@@ -13,7 +13,7 @@ extension UdacityClient {
     // MARK: Constants
     struct Constants {
         static let ApiScheme = "https"
-        static let ApiHost = "www.udacity.com"
+        static let ApiHost = "onthemap-api.udacity.com"
         static let LimitLocation = "100"
         static let OrderLocation = "-updatedAt"
     }
@@ -28,10 +28,10 @@ extension UdacityClient {
     struct Methods {
         
         // MARK: Session
-        static let Session = "/api/session"
+        static let Session = "/v1/session"
         
         // MARK: Users data
-        static let Users = "/api/users"
+        static let Users = "/v1/users"
         
         // MARK: Parse Students location
         static let StudentLocation = "/parse/classes/StudentLocation"
