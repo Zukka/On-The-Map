@@ -74,7 +74,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         
         // Check if is a valid link
         let startLinkChars = "https://"
-        guard startLinkChars.characters.contains(textFieldLink.text!.lowercased().characters.first!) else {
+        guard startLinkChars.contains(textFieldLink.text!.lowercased().first!) else {
             showAlertView(message: LinkErrors.startLink)
             return
         }
@@ -140,7 +140,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         
         
         //  MKCoordinateSpanMake define the extension of the  area to show
-        let span = MKCoordinateSpanMake(0.1, 0.1)
+        let span = MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1)
         
         let region = MKCoordinateRegion(center: coordinates!, span: span)
         resultMapView.setRegion(region, animated: true)
@@ -180,7 +180,7 @@ private extension PostingViewController {
                                                     message: message,
                                                     preferredStyle: .alert)
         // Add action for close alert view
-        let action = UIAlertAction(title: "Close", style: UIAlertActionStyle.default,
+        let action = UIAlertAction(title: "Close", style: UIAlertAction.Style.default,
                                    handler: {(paramAction :UIAlertAction!) in
                                     
         })

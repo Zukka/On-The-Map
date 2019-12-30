@@ -50,7 +50,7 @@ class UdacityClient: NSObject {
             /* Remove range characters if isUdacityRequest is true */
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             if isUdacityRequest {
-                let range = Range(5..<data!.count)
+                let range = (5..<data!.count)
                 let newData = data?.subdata(in: range) /* subset response data! */
                 self.convertDataWithCompletionHandler(newData!, completionHandlerForConvertData: completionHandleforGET)
             } else {
@@ -91,7 +91,7 @@ class UdacityClient: NSObject {
             /* Remove range characters if isUdacityRequest is true */
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             if isUdacityRequest {
-                let range = Range(5..<data!.count)
+                let range = (5..<data!.count)
                 let newData = data?.subdata(in: range) /* subset response data! */
                 self.convertDataWithCompletionHandler(newData!, completionHandlerForConvertData: completionHandlerForPUT)
             } else {
@@ -136,7 +136,7 @@ class UdacityClient: NSObject {
             /* Remove range characters if isUdacityRequest is true */
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             if isUdacityRequest {
-                let range = Range(5..<data!.count)
+                let range = (5..<data!.count)
                 let newData = data?.subdata(in: range) /* subset response data! */
                 self.convertDataWithCompletionHandler(newData!, completionHandlerForConvertData: completionHandleforDELETE)
             } else {
@@ -180,7 +180,7 @@ class UdacityClient: NSObject {
             /* Remove range characters if isUdacityRequest is true */
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             if isUdacityRequest {
-                let range = Range(5..<data!.count)
+                let range = (5..<data!.count)
                 let newData = data?.subdata(in: range) /* subset response data! */
                 self.convertDataWithCompletionHandler(newData!, completionHandlerForConvertData: completionHandlerForPOST)
             } else {

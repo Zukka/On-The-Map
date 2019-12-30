@@ -105,7 +105,7 @@ private extension LoginViewController {
                                                  message: message,
                                                  preferredStyle: .alert)
         // Add action for close alert view
-        let action = UIAlertAction(title: "Close", style: UIAlertActionStyle.default,
+        let action = UIAlertAction(title: "Close", style: UIAlertAction.Style.default,
                                    handler: {(paramAction :UIAlertAction!) in
                                     
         })

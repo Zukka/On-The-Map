@@ -80,7 +80,7 @@ class AppTabBarViewController: UITabBarController {
     
     func activityIndicator() {
         AppTabBarViewController.indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-        AppTabBarViewController.indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        AppTabBarViewController.indicator.style = UIActivityIndicatorView.Style.gray
         AppTabBarViewController.indicator.center = self.view.center
         self.view.addSubview(AppTabBarViewController.indicator)
     }
@@ -114,7 +114,7 @@ private extension AppTabBarViewController {
                                                     message: message,
                                                     preferredStyle: .alert)
         // Add action for close alert view
-        let action = UIAlertAction(title: "Close", style: UIAlertActionStyle.default,
+        let action = UIAlertAction(title: "Close", style: UIAlertAction.Style.default,
                                    handler: {(paramAction :UIAlertAction!) in
                                     
         })
@@ -129,12 +129,12 @@ private extension AppTabBarViewController {
                                                      message: message,
                                                      preferredStyle: .alert)
         // Add actions
-        let actionOk = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default,
+        let actionOk = UIAlertAction(title: "Overwrite", style: UIAlertAction.Style.default,
                                    handler: {(paramAction :UIAlertAction!) in
                                     self.openPostViewController()
                                     
         })
-        let actionCancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel,
+        let actionCancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel,
                                    handler: {(paramAction :UIAlertAction!) in
                                     self.refreshPressed((Any).self)
                                    

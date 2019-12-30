@@ -147,7 +147,7 @@ private extension StudentsMapViewController {
                                                     message: message,
                                                     preferredStyle: .alert)
         // Add action for close alert view
-        let action = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,
+        let action = UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.default,
                                    handler: {(paramAction :UIAlertAction!) in
                                     
         })

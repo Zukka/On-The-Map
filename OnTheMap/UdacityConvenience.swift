@@ -180,7 +180,9 @@ extension UdacityClient {
             
         let mutableMethod: String = Methods.StudentLocation
         let isUdacityRequest = false
-        let jsonBody = "{\"\(ParameterKeys.UniqueKey)\": \"\(self.userID!)\", \"\(ParameterKeys.FirtstName)\": \"\(self.userFirstName!)\", \"\(ParameterKeys.LastName)\": \"\(self.userLastName!)\",\"\(ParameterKeys.MapString)\": \"\(mapString)\", \"\(ParameterKeys.MediaURL)\": \"\(mediaURL)\",\"\(ParameterKeys.Latitude)\": \(latitude), \"\(ParameterKeys.Longitude)\": \(longitude)}"
+        let firstName = (self.userFirstName != nil) ? self.userFirstName : ""
+        let lastName = (self.userLastName != nil) ? self.userLastName : ""
+        let jsonBody = "{\"\(ParameterKeys.UniqueKey)\": \"\(self.userID!)\", \"\(ParameterKeys.FirtstName)\": \"\(firstName!)\", \"\(ParameterKeys.LastName)\": \"\(lastName!)\",\"\(ParameterKeys.MapString)\": \"\(mapString)\", \"\(ParameterKeys.MediaURL)\": \"\(mediaURL)\",\"\(ParameterKeys.Latitude)\": \(latitude), \"\(ParameterKeys.Longitude)\": \(longitude)}"
         let _ = taskForPOSTMethod(mutableMethod, parameters: parameters as [String:AnyObject], jsonBody: jsonBody, isUdacityRequest: isUdacityRequest) { (results, error) in
             if let error = error {
                 completionHandlerForPostingStudentLocation(nil, error)
