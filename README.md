@@ -6,7 +6,7 @@ User will be able to add their data by posting a string location, app geocoded t
 
 ## Requirements
 
-- Xcode Xcode 9.0
+- Xcode Xcode 11.3
 - Swift 5.0
 
 ## License
